@@ -1,0 +1,3 @@
+E:\szkolda\C++\projekty\raycasting\x64\Debug\raycasting.exe
+E:\szkolda\C++\projekty\raycasting\x64\Debug\raycasting.vcxproj.CopyComplete
+E:\szkolda\C++\projekty\raycasting\x64\Debug\raylib.dll
