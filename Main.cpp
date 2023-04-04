@@ -3,8 +3,11 @@
 
 #include <raylib.h>
 #include <math.h>
+#include <stdlib.h>
 
-void drawMap(int, int, Texture2D);
+void drawMap();
+void drawVisionRays(float, float, float, float);
+void drawPlayer(float, float, Texture2D);
 
 const int screenWidth = 800;
 const int screenHeight = 800;
@@ -25,10 +28,10 @@ const char map[] =
 int main() {
     InitWindow(screenWidth, screenHeight, "Raylib map");
 
-    float playerX = tileSize + 40;
-    float playerY = tileSize + 40;
-    float playerSpeed = 1.5;
     Texture2D playerTexture = LoadTexture("images/circle.png");
+    float playerX = tileSize + playerTexture.width;
+    float playerY = tileSize + playerTexture.height;
+    float playerSpeed = 1.5;
 
     SetTargetFPS(60);
 
@@ -36,8 +39,8 @@ int main() {
         float dx = sin(playerRotationAngle * PI / 180.0);
         float dy = cos(playerRotationAngle * PI / 180.0) * (-1);
 
-        float finalPlayerX = playerX + dx;
-        float finalPlayerY = playerY + dy;
+        float newPlayerX = playerX + dx * playerSpeed;
+        float newPlayerY = playerY + dy * playerSpeed;
 
         if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))) {
             playerRotationAngle += 1.5;
@@ -46,21 +49,19 @@ int main() {
             playerRotationAngle -= 1.5;
         }
         // --------------------------------------------- Tymczasowy warunek -----------------------------------------------------
-        if (((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))) && 
-            map[(int)finalPlayerX / tileSize + ((int)(finalPlayerY / tileSize) * mapWidth)] == '.' &&
-            map[(int)(finalPlayerX + playerTexture.width - 1) / tileSize + ((int)(finalPlayerY + playerTexture.height - 1) / tileSize * mapWidth)] == '.' &&
-            map[(int)finalPlayerX / tileSize + ((int)(finalPlayerY + playerTexture.height - 1) / tileSize * mapWidth)] == '.' && 
-            map[(int)(finalPlayerX + playerTexture.width - 1) / tileSize + ((int)(finalPlayerY) / tileSize * mapWidth)] == '.')
+        if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)))
         {
-            playerX = playerX + (finalPlayerX - playerX) * playerSpeed;
-            playerY = playerY + (finalPlayerY - playerY) * playerSpeed;
+            playerX = newPlayerX;
+            playerY = newPlayerY;
         }
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
         // Draw map
-        drawMap(playerX, playerY, playerTexture); 
+        drawMap();
+        drawPlayer(playerX, playerY, playerTexture);
+        drawVisionRays(playerX, playerY, dx, dy);
 
         EndDrawing();
     }
@@ -69,7 +70,7 @@ int main() {
     return 0;
 }
 
-void drawMap(int playerX, int playerY, Texture2D playerTexture) {
+void drawMap() {
 
     for (int y = 0; y < mapHeight; y++) {
         for (int x = 0; x < mapWidth; x++) {
@@ -86,10 +87,26 @@ void drawMap(int playerX, int playerY, Texture2D playerTexture) {
             DrawLine(x * tileSize + 1, y * tileSize, x * tileSize + 1, y * tileSize + tileSize, GRAY);
         }
     }
+}
 
-    // Draw player
+void drawVisionRays(float playerX, float playerY, float dx, float dy) {
+    
+    float lineNewPositionX = playerX;
+    float lineNewPositionY = playerY;
+
+    while ((((int)lineNewPositionX % tileSize) != 0) && (((int)lineNewPositionY % tileSize) != 0))
+    {
+        lineNewPositionX += dx;
+        lineNewPositionY += dy;
+    }
+
+    DrawLine(playerX, playerY, lineNewPositionX, lineNewPositionY, DARKBLUE);
+}
+
+void drawPlayer(float playerX, float playerY, Texture2D playerTexture) {
+
     Rectangle arg2 = { 0, 0, playerTexture.width, playerTexture.height };
-    Rectangle arg3 = { playerX + playerTexture.width / 2, playerY + playerTexture.height / 2, playerTexture.width, playerTexture.height };
+    Rectangle arg3 = { playerX, playerY, playerTexture.width, playerTexture.height };
 
     DrawTexturePro(playerTexture, arg2, arg3, ORIGIN, playerRotationAngle, WHITE);
 }
