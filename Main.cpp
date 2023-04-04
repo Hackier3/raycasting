@@ -1,12 +1,15 @@
 #define PI 3.14159
 #define ORIGIN { (float)playerTexture.width / 2, (float)playerTexture.height / 2 }
+#define NUMBER_OF_RAYS 539
+#define RAY_DESTRIBUTION_DESTINY 10
 
 #include <raylib.h>
 #include <math.h>
 #include <stdlib.h>
+#include <vector>
 
 void drawMap();
-void drawVisionRays(float, float, float, float);
+void drawVisionRays(float, float, float);
 void drawPlayer(float, float, Texture2D);
 
 const int screenWidth = 800;
@@ -32,12 +35,16 @@ int main() {
     float playerX = tileSize + playerTexture.width;
     float playerY = tileSize + playerTexture.height;
     float playerSpeed = 1.5;
-
+    
     SetTargetFPS(60);
 
-    while (!WindowShouldClose()) {
-        float dx = sin(playerRotationAngle * PI / 180.0);
-        float dy = cos(playerRotationAngle * PI / 180.0) * (-1);
+    while (!WindowShouldClose()) 
+    {
+        float dx(99);
+        float dy(99);
+
+        dx = sin(playerRotationAngle * PI / 180.0);
+        dy = cos(playerRotationAngle * PI / 180.0) * (-1);
 
         float newPlayerX = playerX + dx * playerSpeed;
         float newPlayerY = playerY + dy * playerSpeed;
@@ -48,7 +55,6 @@ int main() {
         if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))) {
             playerRotationAngle -= 1.5;
         }
-        // --------------------------------------------- Tymczasowy warunek -----------------------------------------------------
         if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)))
         {
             playerX = newPlayerX;
@@ -61,7 +67,7 @@ int main() {
         // Draw map
         drawMap();
         drawPlayer(playerX, playerY, playerTexture);
-        drawVisionRays(playerX, playerY, dx, dy);
+        drawVisionRays(playerX, playerY, playerSpeed);
 
         EndDrawing();
     }
@@ -89,28 +95,40 @@ void drawMap() {
     }
 }
 
-void drawVisionRays(float playerX, float playerY, float dx, float dy) {
-    
-    float lineNewPositionX = playerX;
-    float lineNewPositionY = playerY;
+void drawVisionRays(float playerX, float playerY, float playerSpeed) {
 
-    while ((int)lineNewPositionX % tileSize != 0 || (int)lineNewPositionY % tileSize != 0)
-    {
-        lineNewPositionX += dx;
-        lineNewPositionY += dy;
+    float lineNewPositionX;
+    float lineNewPositionY;
 
-        if (map[(int)lineNewPositionX / tileSize + (int)(lineNewPositionY / tileSize) * mapWidth] != '.')
-        {
-            break;
-        }
-        else
+    for(float i = 0; i < NUMBER_OF_RAYS; i++)
+    { 
+        lineNewPositionX = playerX;
+        lineNewPositionY = playerY;
+
+        float dx = sin((playerRotationAngle + i / RAY_DESTRIBUTION_DESTINY - NUMBER_OF_RAYS / (2 * RAY_DESTRIBUTION_DESTINY) - 1) * PI / 180.0);
+        float dy = cos((playerRotationAngle + i / RAY_DESTRIBUTION_DESTINY - NUMBER_OF_RAYS / (2 * RAY_DESTRIBUTION_DESTINY) - 1) * PI / 180.0) * (-1);
+
+        lineNewPositionX = playerX + dx * playerSpeed;
+        lineNewPositionY = playerY + dy * playerSpeed;
+
+        while ((int)lineNewPositionX % tileSize != 0 || (int)lineNewPositionY % tileSize != 0)
         {
             lineNewPositionX += dx;
             lineNewPositionY += dy;
-        }
-    }
 
-    DrawLine(playerX, playerY, lineNewPositionX, lineNewPositionY, DARKBLUE);
+            if (map[(int)lineNewPositionX / tileSize + (int)(lineNewPositionY / tileSize) * mapWidth] != '.')
+            {
+                break;
+            }
+            else
+            {
+                lineNewPositionX += dx;
+                lineNewPositionY += dy;
+            }
+        }
+
+        DrawLine(playerX, playerY, lineNewPositionX, lineNewPositionY, DARKBLUE);
+    }
 }
 
 void drawPlayer(float playerX, float playerY, Texture2D playerTexture) {
