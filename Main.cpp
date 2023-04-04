@@ -94,10 +94,20 @@ void drawVisionRays(float playerX, float playerY, float dx, float dy) {
     float lineNewPositionX = playerX;
     float lineNewPositionY = playerY;
 
-    while ((((int)lineNewPositionX % tileSize) != 0) && (((int)lineNewPositionY % tileSize) != 0))
+    while ((int)lineNewPositionX % tileSize != 0 || (int)lineNewPositionY % tileSize != 0)
     {
         lineNewPositionX += dx;
         lineNewPositionY += dy;
+
+        if (map[(int)lineNewPositionX / tileSize + (int)(lineNewPositionY / tileSize) * mapWidth] != '.')
+        {
+            break;
+        }
+        else
+        {
+            lineNewPositionX += dx;
+            lineNewPositionY += dy;
+        }
     }
 
     DrawLine(playerX, playerY, lineNewPositionX, lineNewPositionY, DARKBLUE);
