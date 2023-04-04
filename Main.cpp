@@ -33,8 +33,8 @@ int main() {
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
-        float dx = cos(playerRotationAngle * PI / 180.0);
-        float dy = sin(playerRotationAngle * PI / 180.0);
+        float dx = sin(playerRotationAngle * PI / 180.0);
+        float dy = cos(playerRotationAngle * PI / 180.0) * (-1);
 
         float finalPlayerX = playerX + dx;
         float finalPlayerY = playerY + dy;
@@ -45,6 +45,7 @@ int main() {
         if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))) {
             playerRotationAngle -= 1.5;
         }
+        // --------------------------------------------- Tymczasowy warunek -----------------------------------------------------
         if (((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))) && 
             map[(int)finalPlayerX / tileSize + ((int)(finalPlayerY / tileSize) * mapWidth)] == '.' &&
             map[(int)(finalPlayerX + playerTexture.width - 1) / tileSize + ((int)(finalPlayerY + playerTexture.height - 1) / tileSize * mapWidth)] == '.' &&
