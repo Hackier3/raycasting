@@ -1,21 +1,43 @@
 ﻿  Main.cpp
 E:\szkolda\C++\projekty\raycasting\Main.cpp(35,19): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
 E:\szkolda\C++\projekty\raycasting\Main.cpp(36,19): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-E:\szkolda\C++\projekty\raycasting\Main.cpp(46,17): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
-E:\szkolda\C++\projekty\raycasting\Main.cpp(47,52): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(47,17): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(48,52): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(107,18): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
 E:\szkolda\C++\projekty\raycasting\Main.cpp(108,18): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
-E:\szkolda\C++\projekty\raycasting\Main.cpp(109,18): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
-E:\szkolda\C++\projekty\raycasting\Main.cpp(130,54): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-E:\szkolda\C++\projekty\raycasting\Main.cpp(130,36): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(110,29): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(111,29): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(113,41): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(113,88): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(115,33): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(116,33): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(118,46): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(118,88): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(124,37): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(125,37): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(129,56): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(129,80): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(130,56): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(130,80): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(130,79): warning C4244: "argument": konwersja z "_Ty" do "int", możliwa utrata danych
+          with
+          [
+              _Ty=float
+          ]
+E:\szkolda\C++\projekty\raycasting\Main.cpp(130,55): warning C4244: "argument": konwersja z "_Ty" do "int", możliwa utrata danych
+          with
+          [
+              _Ty=float
+          ]
 E:\szkolda\C++\projekty\raycasting\Main.cpp(130,27): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
 E:\szkolda\C++\projekty\raycasting\Main.cpp(130,18): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-E:\szkolda\C++\projekty\raycasting\Main.cpp(136,43): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-E:\szkolda\C++\projekty\raycasting\Main.cpp(136,43): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-E:\szkolda\C++\projekty\raycasting\Main.cpp(136,64): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-E:\szkolda\C++\projekty\raycasting\Main.cpp(136,64): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-E:\szkolda\C++\projekty\raycasting\Main.cpp(137,55): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-E:\szkolda\C++\projekty\raycasting\Main.cpp(137,55): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-E:\szkolda\C++\projekty\raycasting\Main.cpp(137,76): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-E:\szkolda\C++\projekty\raycasting\Main.cpp(137,76): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-E:\szkolda\C++\projekty\raycasting\Main.cpp(139,55): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(138,43): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+E:\szkolda\C++\projekty\raycasting\Main.cpp(138,43): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(138,64): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+E:\szkolda\C++\projekty\raycasting\Main.cpp(138,64): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(139,55): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+E:\szkolda\C++\projekty\raycasting\Main.cpp(139,55): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(139,76): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+E:\szkolda\C++\projekty\raycasting\Main.cpp(139,76): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(141,55): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
   raycasting.vcxproj -> E:\szkolda\C++\projekty\raycasting\x64\Debug\raycasting.exe
