@@ -1,7 +1,7 @@
 #define PI 3.14159
 #define ORIGIN { (float)playerTexture.width / 2, (float)playerTexture.height / 2 }
-#define NUMBER_OF_RAYS 539
-#define RAY_DESTRIBUTION_DESTINY 10
+#define NUMBER_OF_RAYS 1001
+#define RAY_DESTRIBUTION_DESTINY 12
 
 #include <raylib.h>
 #include <math.h>
@@ -41,14 +41,8 @@ int main() {
 
     while (!WindowShouldClose()) 
     {
-        float dx(99);
-        float dy(99);
-
-        dx = sin(playerRotationAngle * PI / 180.0);
-        dy = cos(playerRotationAngle * PI / 180.0) * (-1);
-
-        float newPlayerX = playerX + dx * playerSpeed;
-        float newPlayerY = playerY + dy * playerSpeed;
+        float dx = sin(playerRotationAngle * PI / 180.0);
+        float dy = cos(playerRotationAngle * PI / 180.0) * (-1);
 
         if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))) {
             playerRotationAngle += 1.5;
@@ -58,8 +52,13 @@ int main() {
         }
         if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)))
         {
-            playerX = newPlayerX;
-            playerY = newPlayerY;
+            playerX = playerX + dx * playerSpeed;
+            playerY = playerY + dy * playerSpeed;
+        }
+        if (IsKeyDown(KEY_DOWN))
+        {
+            playerX = playerX - dx * playerSpeed;
+            playerY = playerY - dy * playerSpeed;
         }
 
         BeginDrawing();
@@ -69,6 +68,13 @@ int main() {
         drawMap();
         map3D = drawVisionRays(playerX, playerY, playerSpeed);
         drawPlayer(playerX, playerY, playerTexture);
+
+        //// Narysuj mape 3D
+        //for (int i = 0; i < map3D.size(); i++)
+        //{
+        //    float c = sqrt(pow(map3D.at(i).x - playerX, 2) + pow(map3D.at(i).y - playerY, 2));
+        //    DrawRectangle(i, screenHeight/2 - 800/c, i + screenWidth / map3D.size(), 1600/c, PURPLE);
+        //}
 
         EndDrawing();
     }
@@ -118,11 +124,6 @@ std::vector<Vector2> drawVisionRays(float playerX, float playerY, float playerSp
             if (map[(int)lineNewPositionX.at(i) / tileSize + (int)(lineNewPositionY.at(i) / tileSize) * mapWidth] != '.')
             {
                 break;
-            }
-            else
-            {
-                lineNewPositionX.at(i) += dx;
-                lineNewPositionY.at(i) += dy;
             }
         }
         
