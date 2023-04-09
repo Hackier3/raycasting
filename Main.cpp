@@ -7,10 +7,10 @@
 #include <math.h>
 #include <stdlib.h>
 #include <vector>
+#include "Player.h"
 
 void drawMap();
 std::vector<Vector2> drawVisionRays(float, float, float);
-void drawPlayer(float, float, Texture2D);
 
 const int screenWidth = 800;
 const int screenHeight = 800;
@@ -31,10 +31,7 @@ const char map[] =
 int main() {
     InitWindow(screenWidth, screenHeight, "Raylib map");
 
-    Texture2D playerTexture = LoadTexture("images/circle.png");
-    float playerX = tileSize + playerTexture.width;
-    float playerY = tileSize + playerTexture.height;
-    float playerSpeed = 1.5;
+    Player player("images/circle.png");
     std::vector<Vector2> map3D;
     
     SetTargetFPS(60);
@@ -52,13 +49,13 @@ int main() {
         }
         if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)))
         {
-            playerX = playerX + dx * playerSpeed;
-            playerY = playerY + dy * playerSpeed;
+            player.x += dx * player.speed;
+            player.y += dy * player.speed;
         }
         if (IsKeyDown(KEY_DOWN))
         {
-            playerX = playerX - dx * playerSpeed;
-            playerY = playerY - dy * playerSpeed;
+            player.x -= dx * player.speed;
+            player.y -= dy * player.speed;
         }
 
         BeginDrawing();
@@ -66,8 +63,8 @@ int main() {
 
         // Draw map
         drawMap();
-        map3D = drawVisionRays(playerX, playerY, playerSpeed);
-        drawPlayer(playerX, playerY, playerTexture);
+        map3D = drawVisionRays(player.x, player.y, player.speed);
+        player.drawPlayer();
 
         //// Narysuj mape 3D
         //for (int i = 0; i < map3D.size(); i++)
@@ -134,10 +131,3 @@ std::vector<Vector2> drawVisionRays(float playerX, float playerY, float playerSp
     return raysEndCoordds;
 }
 
-void drawPlayer(float playerX, float playerY, Texture2D playerTexture) {
-
-    Rectangle arg2 = { 0, 0, playerTexture.width, playerTexture.height };
-    Rectangle arg3 = { playerX, playerY, playerTexture.width, playerTexture.height };
-
-    DrawTexturePro(playerTexture, arg2, arg3, ORIGIN, playerRotationAngle, WHITE);
-}

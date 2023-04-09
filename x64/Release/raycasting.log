@@ -1,0 +1,34 @@
+﻿  Main.cpp
+E:\szkolda\C++\projekty\raycasting\Main.cpp(42,18): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(43,18): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(111,18): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(112,18): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(114,29): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(115,29): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(117,41): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(117,88): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(119,33): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(120,33): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(122,46): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(122,88): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(128,56): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(128,80): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(129,56): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(129,80): warning C4244: "argument": konwersja z "float" do "const unsigned __int64", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(129,79): warning C4244: "argument": konwersja z "_Ty" do "int", możliwa utrata danych
+          with
+          [
+              _Ty=float
+          ]
+E:\szkolda\C++\projekty\raycasting\Main.cpp(129,55): warning C4244: "argument": konwersja z "_Ty" do "int", możliwa utrata danych
+          with
+          [
+              _Ty=float
+          ]
+E:\szkolda\C++\projekty\raycasting\Main.cpp(129,27): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+E:\szkolda\C++\projekty\raycasting\Main.cpp(129,18): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+Player.obj : error LNK2005: Element "double playerRotationAngle" (?playerRotationAngle@@3NA) jest już zdefiniowany w elemencie Main.obj
+Player.obj : error LNK2005: Element "class std::vector<struct Vector2,class std::allocator<struct Vector2> > __cdecl drawVisionRays(float,float,float)" (?drawVisionRays@@YA?AV?$vector@UVector2@@V?$allocator@UVector2@@@std@@@std@@MMM@Z) jest już zdefiniowany w elemencie Main.obj
+Player.obj : error LNK2005: Element "void __cdecl drawMap(void)" (?drawMap@@YAXXZ) jest już zdefiniowany w elemencie Main.obj
+Player.obj : error LNK2005: Element main jest już zdefiniowany w elemencie Main.obj
+E:\szkolda\C++\projekty\raycasting\x64\Release\raycasting.exe : fatal error LNK1169: znaleziono co najmniej jeden wielokrotnie zdefiniowany symbol
