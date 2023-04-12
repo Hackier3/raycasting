@@ -1,23 +1,28 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <raylib.h>
 #include <vector>
 
 class Player
 {
 public:
-	Player(const char* texture);
+	Player(const char* texturePath);
 	void drawPlayer();
 	void calculateRaysCoords();
 	void drawVisionRays();
 	void movement();
 
+	std::vector<Vector2> raysEndCoords;
 	float x;
 	float y;
-	float speed;
-	double rotationAngle;
-
+	static const int numberOfRays = 1001;
+	static const int rayDestributtionDestiny = 12;
 private:
 	Texture2D texture;
-	const int numberOfRays = 1001;
-	const int rayDestributtionDestiny = 12;
-	std::vector<Vector2> raysEndCoords;
+	float speed;
+	double rotationAngle;
 };
+
+#endif // PLAYER_H
+
