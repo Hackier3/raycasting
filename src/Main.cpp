@@ -22,7 +22,7 @@ int main() {
             drawMiniMap();
             player.drawVisionRays();
             player.drawPlayer();
-            draw3DMap();
+            // draw3DMap();
         }
         EndDrawing();
     }

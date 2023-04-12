@@ -29,8 +29,7 @@ void calculateWallHeight(Player *player) {
     const float FOV = Player::numberOfRays / Player::rayDestributtionDestiny * (PI / 180); // k¹t widzenia w radianach
 
     const float halfScreenWidth = screenWidth / 2;
-    const float wallHeightScale = 30;
-    const float maxDistance = 20;
+    const float wallHeightScale = 11;
 
     for (int i = 0; i < Player::numberOfRays; i++) {
         Vector2 rayEnd = player->raysEndCoords.at(i);
@@ -39,24 +38,20 @@ void calculateWallHeight(Player *player) {
         // Wysokoœæ œciany
         float wallHeight = screenHeight * wallHeightScale / distance;
 
-        // Wspó³rzêdne œciany
-        float wallTop = (screenHeight - wallHeight) / 2;
-        float wallBottom = (screenHeight + wallHeight) / 2;
-
         // Kolor œciany
-        Color wallColor = RED;
-        if (distance > maxDistance) {
-            wallColor = GRAY;
-            distance = maxDistance;
+        if (distance < 25) {
+            distance = 25;
         }
+        Color wallColor { distance+50, distance+50, distance+50, 255 };
 
         // Pozycja œciany na ekranie
-        float wallScreenX = i * (screenWidth / Player::numberOfRays);
-        float wallScreenTop = wallTop;
-        float wallScreenBottom = wallBottom;
+        float wallX = i * screenWidth / Player::numberOfRays;
+        float wallTop = (screenHeight - wallHeight) / 2;
+        float wallBot = (screenHeight + wallHeight) / 2;
 
         // Narysuj liniê
-        DrawLine(wallScreenX, wallScreenTop, wallScreenX, wallScreenBottom, wallColor);
+        DrawLine(wallX, wallTop, wallX, wallBot, wallColor);
+        DrawLine(wallX, screenHeight, wallX, wallBot, GREEN);
     }
 }
 

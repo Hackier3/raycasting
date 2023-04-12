@@ -3,7 +3,7 @@
 #include "Defines.h"
 
 Player::Player(const char* texturePath) :   texture(LoadTexture(texturePath)), 
-                                            speed(1.5), 
+                                            speed(0.35), 
                                             rotationAngle(0),
                                             raysEndCoords(numberOfRays)
 {
@@ -32,7 +32,7 @@ void Player::calculateRaysCoords() {
         lineNewPositionX.at(i) += dx * speed;
         lineNewPositionY.at(i) += dy * speed;
 
-        while ((int)lineNewPositionX.at(i) % tileSize != 0 || (int)lineNewPositionY.at(i) % tileSize != 0)
+        while (true)
         {
             lineNewPositionX.at(i) += dx;
             lineNewPositionY.at(i) += dy;
