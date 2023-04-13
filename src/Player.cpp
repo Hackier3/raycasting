@@ -23,8 +23,11 @@ void Player::calculateRaysCoords() {
 
     std::vector<float> lineNewPositionX(numberOfRays, x);
     std::vector<float> lineNewPositionY(numberOfRays, y);
+    std::vector<float> raysForBlock(numberOfRays, 1);
+    int lastWallPos = (int)lineNewPositionX.at(1) / tileSize + (int)(lineNewPositionY.at(1) / tileSize) * mapWidth;
+    int newWallPos = -1;
 
-    for (float i = 0; i < numberOfRays; i++)
+    for (int i = 1; i < numberOfRays; i++)
     {
         float dx = sin((rotationAngle + i / rayDestributtionDestiny - numberOfRays / (2 * rayDestributtionDestiny) - 1) * PI / 180.0);
         float dy = cos((rotationAngle + i / rayDestributtionDestiny - numberOfRays / (2 * rayDestributtionDestiny) - 1) * PI / 180.0) * (-1);
@@ -39,11 +42,25 @@ void Player::calculateRaysCoords() {
 
             if (map[(int)lineNewPositionX.at(i) / tileSize + (int)(lineNewPositionY.at(i) / tileSize) * mapWidth] != '.')
             {
+                newWallPos = (int)lineNewPositionX.at(i) / tileSize + (int)(lineNewPositionY.at(i) / tileSize) * mapWidth;
                 break;
             }
         }
 
-        raysEndCoords.at(i) = { lineNewPositionX.at(i), lineNewPositionY.at(i) };
+        if (lastWallPos == newWallPos)
+            raysForBlock.at(i) = raysForBlock.at(i - 1) + 1;      
+        lastWallPos = newWallPos;
+    }
+
+    for (int i = numberOfRays - 1; i != 0; i--)
+    {
+        if (raysForBlock.at(i - 1) != 1)
+            raysForBlock.at(i - 1) = raysForBlock.at(i);
+    }
+
+    for (int i = 0; i < numberOfRays; i++)
+    {
+        raysEndCoords.at(i) = { lineNewPositionX.at(i), lineNewPositionY.at(i), raysForBlock.at(i) };
     }
 }
 

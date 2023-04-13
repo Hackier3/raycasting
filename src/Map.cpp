@@ -24,14 +24,18 @@ void drawMiniMap(){
     }
 }
 
-void calculateWallHeight(Player* player, Texture2D texture) {
+void calculateWallHeight(Player* player, const char* texturePath) {
 
+    static Texture2D texture = LoadTexture(texturePath);
     const float halfScreenWidth = screenWidth / 2;
     const float wallHeightScale = 11;
     const float brightnessScale = 100;
+    Vector2 rayEnd;
 
     for (int i = 0; i < Player::numberOfRays; i++) {
-        Vector2 rayEnd = player->raysEndCoords.at(i);
+
+        rayEnd.x = player->raysEndCoords.at(i).x;
+        rayEnd.y = player->raysEndCoords.at(i).y;
         float distance = sqrt(pow(rayEnd.x - player->x, 2) + pow(rayEnd.y - player->y, 2));
 
         // Wysokoœæ œciany
@@ -51,8 +55,6 @@ void calculateWallHeight(Player* player, Texture2D texture) {
         DrawTexturePro(texture, sourceRec, destRec, origin, 0, tint);
     }
 }
-
-
 
 void draw3DMap() {
 
