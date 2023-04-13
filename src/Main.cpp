@@ -14,7 +14,7 @@ int main() {
     {
         player.movement();
         player.calculateRaysCoords();
-        calculateWallHeight(&player);
+        calculateWallHeight(&player, LoadTexture("images/cobblestone.png"));
 
         BeginDrawing();
         {

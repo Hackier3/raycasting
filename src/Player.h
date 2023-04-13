@@ -16,8 +16,8 @@ public:
 	std::vector<Vector2> raysEndCoords;
 	float x;
 	float y;
-	static const int numberOfRays = 1001;
-	static const int rayDestributtionDestiny = 12;
+	static const int numberOfRays = 3001;
+	static const int rayDestributtionDestiny = numberOfRays / 88;
 private:
 	Texture2D texture;
 	float speed;

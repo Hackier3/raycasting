@@ -7,7 +7,7 @@
 #include "Player.h"
 
 void drawMiniMap();
-void calculateWallHeight(Player *player);
+void calculateWallHeight(Player *player, Texture2D texture);
 void draw3DMap();
 
 const int mapWidth = 9;

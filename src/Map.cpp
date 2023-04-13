@@ -24,12 +24,11 @@ void drawMiniMap(){
     }
 }
 
-void calculateWallHeight(Player *player) {
-
-    const float FOV = Player::numberOfRays / Player::rayDestributtionDestiny * (PI / 180); // k¹t widzenia w radianach
+void calculateWallHeight(Player* player, Texture2D texture) {
 
     const float halfScreenWidth = screenWidth / 2;
     const float wallHeightScale = 11;
+    const float brightnessScale = 100;
 
     for (int i = 0; i < Player::numberOfRays; i++) {
         Vector2 rayEnd = player->raysEndCoords.at(i);
@@ -38,22 +37,22 @@ void calculateWallHeight(Player *player) {
         // Wysokoœæ œciany
         float wallHeight = screenHeight * wallHeightScale / distance;
 
-        // Kolor œciany
-        if (distance < 25) {
-            distance = 25;
-        }
-        Color wallColor { distance+50, distance+50, distance+50, 255 };
+        // Tekstura œciany
+        Rectangle sourceRec = { 0, 0, texture.width, texture.height };
+        Rectangle destRec = { static_cast<float>(i * screenWidth / Player::numberOfRays), (screenHeight - wallHeight) / 2, screenWidth / Player::numberOfRays, wallHeight };
+        Vector2 origin = { 0, 0 };
 
-        // Pozycja œciany na ekranie
-        float wallX = i * screenWidth / Player::numberOfRays;
-        float wallTop = (screenHeight - wallHeight) / 2;
-        float wallBot = (screenHeight + wallHeight) / 2;
+        // set min and max brithness
+        float brightness = fmaxf(0.02, distance / brightnessScale);
+              brightness = fminf(0.71, brightness);
+        Color tint = ColorFromNormalized({ 255 - brightness, 255 - brightness, 255 - brightness, 1 });
 
-        // Narysuj liniê
-        DrawLine(wallX, wallTop, wallX, wallBot, wallColor);
-        DrawLine(wallX, screenHeight, wallX, wallBot, GREEN);
+        // Narysuj teksturê
+        DrawTexturePro(texture, sourceRec, destRec, origin, 0, tint);
     }
 }
+
+
 
 void draw3DMap() {
 
