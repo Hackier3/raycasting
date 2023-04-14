@@ -31,6 +31,7 @@ void calculateWallHeight(Player* player, const char* texturePath) {
     const float wallHeightScale = 11;
     const float brightnessScale = 100;
     Vector2 rayEnd;
+    int texturePartCounter = 0;
 
     for (int i = 0; i < Player::numberOfRays; i++) {
 
@@ -38,21 +39,24 @@ void calculateWallHeight(Player* player, const char* texturePath) {
         rayEnd.y = player->raysEndCoords.at(i).y;
         float distance = sqrt(pow(rayEnd.x - player->x, 2) + pow(rayEnd.y - player->y, 2));
 
-        // Wysokoœæ œciany
         float wallHeight = screenHeight * wallHeightScale / distance;
 
-        // Tekstura œciany
-        Rectangle sourceRec = { 0, 0, texture.width, texture.height };
+        // Wall texture
+        Rectangle sourceRec = { texturePartCounter * texture.width / player -> raysForBlock.at(i), 0, (texturePartCounter + 1) * texture.width / player->raysForBlock.at(i), texture.height};
         Rectangle destRec = { static_cast<float>(i * screenWidth / Player::numberOfRays), (screenHeight - wallHeight) / 2, screenWidth / Player::numberOfRays, wallHeight };
-        Vector2 origin = { 0, 0 };
+        
+        if (texturePartCounter + 1 != player->raysForBlock.at(i))
+            texturePartCounter++;
+        else
+            texturePartCounter = 0;
 
-        // set min and max brithness
+        // Set min and max brithness
         float brightness = fmaxf(0.02, distance / brightnessScale);
-              brightness = fminf(0.71, brightness);
+        brightness = fminf(0.71, brightness);
         Color tint = ColorFromNormalized({ 255 - brightness, 255 - brightness, 255 - brightness, 1 });
 
-        // Narysuj teksturê
-        DrawTexturePro(texture, sourceRec, destRec, origin, 0, tint);
+        // Draw Texture
+        DrawTexturePro(texture, sourceRec, destRec, { 0, 0 }, 0, tint);
     }
 }
 

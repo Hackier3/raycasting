@@ -13,7 +13,8 @@ public:
 	void drawVisionRays();
 	void movement();
 
-	std::vector<Vector3> raysEndCoords;
+	std::vector<Vector2> raysEndCoords;
+	std::vector<int> raysForBlock; // variable indicating how many rays (including me) point to the block
 	float x;
 	float y;
 	static const int numberOfRays = 1001;
