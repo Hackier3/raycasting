@@ -6,7 +6,8 @@ Player::Player(const char* texturePath) :   texture(LoadTexture(texturePath)),
                                             speed(0.35), 
                                             rotationAngle(0),
                                             raysEndCoords(numberOfRays),
-                                            raysForBlock(numberOfRays, 1)
+                                            raysForBlock(numberOfRays, 1), 
+                                            rayDestributtionDestiny(numberOfRays / 88)
 {
     x = tileSize + texture.width;
     y = tileSize + texture.height;

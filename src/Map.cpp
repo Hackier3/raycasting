@@ -1,4 +1,4 @@
-#include "Map.h"
+﻿#include "Map.h"
 #include "Player.h"
 #include "Defines.h"
 
@@ -38,11 +38,12 @@ void calculateWallHeight(Player* player, const char* texturePath) {
         rayEnd.x = player->raysEndCoords.at(i).x;
         rayEnd.y = player->raysEndCoords.at(i).y;
         float distance = sqrt(pow(rayEnd.x - player->x, 2) + pow(rayEnd.y - player->y, 2));
-
         float wallHeight = screenHeight * wallHeightScale / distance;
+        
+        int startPosX = texturePartCounter * texture.width / player->raysForBlock.at(i);
 
         // Wall texture
-        Rectangle sourceRec = { texturePartCounter * texture.width / player -> raysForBlock.at(i), 0, (texturePartCounter + 1) * texture.width / player->raysForBlock.at(i), texture.height};
+        Rectangle sourceRec = { startPosX, 0, 1, texture.height};
         Rectangle destRec = { static_cast<float>(i * screenWidth / Player::numberOfRays), (screenHeight - wallHeight) / 2, screenWidth / Player::numberOfRays, wallHeight };
         
         if (texturePartCounter + 1 != player->raysForBlock.at(i))

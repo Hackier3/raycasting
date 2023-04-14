@@ -17,8 +17,8 @@ public:
 	std::vector<int> raysForBlock; // variable indicating how many rays (including me) point to the block
 	float x;
 	float y;
-	static const int numberOfRays = 1001;
-	static const int rayDestributtionDestiny = numberOfRays / 88;
+	static constexpr float numberOfRays = 1001;
+	const float rayDestributtionDestiny;
 	double rotationAngle;
 
 private:
