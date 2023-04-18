@@ -153,13 +153,13 @@ void Player::movement()
         }
         else if (Player::isRight && Player::isDown)
         {
-            if (rotationAngle <= 90)
-            {
-                y += moveY;
-            }
-            else if (rotationAngle >= 180 && rotationAngle <= 270)
+            if (rotationAngle >= 180 && rotationAngle <= 270)
             {
                 x += moveX;
+            }
+            else if (rotationAngle <= 90)
+            {
+                y += moveY;
             }
             else if (rotationAngle >= 270)
             {
@@ -225,15 +225,15 @@ void Player::movement()
         }
         else if (Player::isLeft && Player::isDown)
         {
-            //if (rotationAngle >= 90 && rotationAngle <= 180)
-            //{
-            //    x -= moveX;
-            //}
-            //else if (rotationAngle >= 270)
-            //{
-            //    y -= moveY;
-            //}
-            /*else*/ if (rotationAngle >= 180 && rotationAngle <= 270)
+            if (rotationAngle >= 270)
+            {
+                x -= moveX;
+            }
+            else if (rotationAngle >= 90 && rotationAngle <= 180)
+            {
+                y -= moveY;
+            }
+            else if (rotationAngle >= 180 && rotationAngle <= 270)
             {
                 x -= moveX;
                 y -= moveY;
@@ -241,15 +241,15 @@ void Player::movement()
         }
         else if (Player::isRight && Player::isDown)
         {
-            //if (rotationAngle <= 90)
-            //{
-            //    y -= moveY;
-            //}
-            //else if (rotationAngle >= 180 && rotationAngle <= 270)
-            //{
-            //    x -= moveX;
-            //}
-            /*else*/ if (rotationAngle >= 90 && rotationAngle <= 180)
+            if (rotationAngle <= 90)
+            {
+                x -= moveX;
+            }
+            else if (rotationAngle >= 180 && rotationAngle <= 270)
+            {
+                y -= moveY;
+            }
+            else if (rotationAngle >= 90 && rotationAngle <= 180)
             {
                 x -= moveX;
                 y -= moveY;
