@@ -7,7 +7,7 @@ int main() {
 
     InitWindow(screenWidth, screenHeight, "Raylib map");
 
-    Player player("images/rsz_circle.png");
+    Player player("images/circle.png");
     SetTargetFPS(60);
  
     while (!WindowShouldClose())
