@@ -38,9 +38,9 @@ void Player::calculateRaysCoords() {
         lineNewPositionY.at(i) += dy * speed;
 
         while (true)
-        {
-            lineNewPositionX.at(i) += dx;
-            lineNewPositionY.at(i) += dy;
+        {                                    //  REASON WHY WALLS CORNERS HAVE STARNGE TEXTURES
+            lineNewPositionX.at(i) += dx * speed;
+            lineNewPositionY.at(i) += dy * speed;
 
             if (map[(int)lineNewPositionX.at(i) / tileSize + (int)(lineNewPositionY.at(i) / tileSize) * mapWidth] != '.')
             {
@@ -83,21 +83,90 @@ void Player::movement()
 {
     float dx = sin(rotationAngle * PI / 180.0);
     float dy = cos(rotationAngle * PI / 180.0) * (-1);
+    checkCollision();
 
     if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))) {
         rotationAngle += 1.5;
     }
     if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))) {
         rotationAngle -= 1.5;
+        if (rotationAngle < 0)
+        {
+            rotationAngle = 360 + rotationAngle;
+        }
     }
     if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)))
     {
-        x += dx * speed;
-        y += dy * speed;
+        if(Player::isLeft && (int)rotationAngle % 360 < 360 && (int)rotationAngle % 360 > 180)
+        { 
+            
+        }
+        else if (Player::isRight && (int)rotationAngle % 360 > 0 && (int)rotationAngle % 360 < 180)
+        {
+
+        }
+        else if (Player::isUp && ((int)rotationAngle % 360 < 90 || (int)rotationAngle % 360 > 270))
+        {
+
+        }
+        else if (Player::isDown && (int)rotationAngle % 360 > 90 && (int)rotationAngle % 360 < 270)
+        {
+
+        }
+        else
+        {
+            x += dx * speed;
+            y += dy * speed;
+        }
     }
-    if (IsKeyDown(KEY_DOWN))
+    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
     {
-        x -= dx * speed;
-        y -= dy * speed;
+        if (Player::isLeft && (int)rotationAngle % 360 > 0 && (int)rotationAngle % 360 < 180)
+        {
+
+        }
+        else if (Player::isRight && (int)rotationAngle % 360 < 360 && (int)rotationAngle % 360 > 180)
+        {
+
+        }
+        else if (Player::isUp && (int)rotationAngle % 360 > 90 && (int)rotationAngle % 360 < 270)
+        {
+
+        }
+        else if (Player::isDown && ((int)rotationAngle % 360 < 90 || (int)rotationAngle % 360 > 270))
+        {
+
+        }
+        else
+        {
+            x -= dx * speed;
+            y -= dy * speed;
+        }
+    }
+}
+
+void Player::checkCollision()
+{
+    isLeft = false;
+    isRight = false;
+    isUp = false;
+    isDown = false;
+
+    if ((int)(x - texture.width / 2) % tileSize == 0 && map[(int)(y / tileSize) * mapWidth + (int)((x - texture.width) / tileSize)] != '.')
+    { 
+        isLeft = true;
+    }
+    else if ((int)(x + texture.width / 2) % tileSize == 0 && map[(int)(y / tileSize) * mapWidth + (int)((x + texture.width) / tileSize)] != '.')
+    {
+        isRight = true;
+    }
+
+    if ((int)(y - texture.height / 2) % tileSize == 0 && map[(int)((y - texture.height) / tileSize) * mapWidth + (int)(x / tileSize)] != '.')
+    {
+        isUp = true;
+    }
+    else if ((int)(y + texture.height / 2) % tileSize == 0 && map[(int)((y + texture.height) / tileSize) * mapWidth + (int)(x / tileSize)] != '.')
+    {
+        isDown = true;
     }
 }

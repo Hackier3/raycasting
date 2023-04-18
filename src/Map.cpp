@@ -40,11 +40,12 @@ void calculateWallHeight(Player* player, const char* texturePath) {
         float distance = sqrt(pow(rayEnd.x - player->x, 2) + pow(rayEnd.y - player->y, 2));
         float wallHeight = screenHeight * wallHeightScale / distance;
         
-        int startPosX = texturePartCounter * texture.width / player->raysForBlock.at(i);
+        int sourceRecX = texturePartCounter * texture.width / player->raysForBlock.at(i);
+        float destRecX = i * screenWidth / Player::numberOfRays;
 
         // Wall texture
-        Rectangle sourceRec = { startPosX, 0, 1, texture.height};
-        Rectangle destRec = { static_cast<float>(i * screenWidth / Player::numberOfRays), (screenHeight - wallHeight) / 2, screenWidth / Player::numberOfRays, wallHeight };
+        Rectangle sourceRec = { sourceRecX, 0, 1, texture.height};
+        Rectangle destRec = { destRecX, (screenHeight - wallHeight) / 2, destRecX / i, wallHeight };
         
         if (texturePartCounter + 1 != player->raysForBlock.at(i))
             texturePartCounter++;

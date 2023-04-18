@@ -19,6 +19,5 @@ const char map[] = "#########"
                    "#....####"
                    "#.......#"
                    "#########";
-extern std::vector<float> wallHeight;
 
 #endif // MAP_H
