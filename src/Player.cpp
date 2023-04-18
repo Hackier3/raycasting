@@ -83,10 +83,16 @@ void Player::movement()
 {
     float dx = sin(rotationAngle * PI / 180.0);
     float dy = cos(rotationAngle * PI / 180.0) * (-1);
+    float moveX = dx * speed;
+    float moveY = dy * speed;
     checkCollision();
 
     if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))) {
         rotationAngle += 1.5;
+        if (rotationAngle > 360)
+        {
+            rotationAngle = (int)rotationAngle % 360;
+        }
     }
     if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))) {
         rotationAngle -= 1.5;
@@ -97,50 +103,178 @@ void Player::movement()
     }
     if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)))
     {
-        if(Player::isLeft && (int)rotationAngle % 360 < 360 && (int)rotationAngle % 360 > 180)
+        if (Player::isLeft && Player::isUp)
+        {
+            if (rotationAngle <= 90)
+            {
+                x += moveX;
+            }
+            else if (rotationAngle <= 270 && rotationAngle >= 180)
+            {
+                y += moveY;
+            }
+            else if (rotationAngle >= 90 && rotationAngle <= 180)
+            { 
+                x += moveX;
+                y += moveY;
+            }
+        }
+        else if (Player::isRight && Player::isUp)
+        {
+            if (rotationAngle >= 270)
+            {
+                x += moveX;
+            }
+            else if (rotationAngle <= 180 && rotationAngle >= 90)
+            {
+                y += moveX;
+            }
+            else if (rotationAngle >= 180 && rotationAngle <= 270)
+            {
+                x += moveX;
+                y += moveY;
+            }
+        }
+        else if (Player::isLeft && Player::isDown)
+        {
+            if (rotationAngle >= 90 && rotationAngle <= 180)
+            {
+                x += moveX;
+            }
+            else if (rotationAngle >= 270)
+            {
+                y += moveY;
+            }
+            else if (rotationAngle <= 90)
+            {
+                x += moveX;
+                y += moveY;
+            }
+        }
+        else if (Player::isRight && Player::isDown)
+        {
+            if (rotationAngle <= 90)
+            {
+                y += moveY;
+            }
+            else if (rotationAngle >= 180 && rotationAngle <= 270)
+            {
+                x += moveX;
+            }
+            else if (rotationAngle >= 270)
+            {
+                x += moveX;
+                y += moveY;
+            }
+        }
+        else if(Player::isLeft && (int)rotationAngle < 360 && (int)rotationAngle > 180)
         { 
-            
+            y += moveY;
         }
-        else if (Player::isRight && (int)rotationAngle % 360 > 0 && (int)rotationAngle % 360 < 180)
+        else if (Player::isRight && (int)rotationAngle > 0 && (int)rotationAngle < 180)
         {
-
+            y += moveY;
         }
-        else if (Player::isUp && ((int)rotationAngle % 360 < 90 || (int)rotationAngle % 360 > 270))
+        else if (Player::isUp && ((int)rotationAngle < 90 || (int)rotationAngle > 270))
         {
-
+            x += moveX;
         }
-        else if (Player::isDown && (int)rotationAngle % 360 > 90 && (int)rotationAngle % 360 < 270)
+        else if (Player::isDown && (int)rotationAngle > 90 && (int)rotationAngle < 270)
         {
-
+            x += moveX;
         }
         else
         {
-            x += dx * speed;
-            y += dy * speed;
+            x += moveX;
+            y += moveY;
         }
     }
     if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
     {
-        if (Player::isLeft && (int)rotationAngle % 360 > 0 && (int)rotationAngle % 360 < 180)
+        if (Player::isLeft && Player::isUp)
         {
-
+            if (rotationAngle >= 180 && rotationAngle <= 270)
+            {
+                x -= moveX;
+            }
+            else if (rotationAngle <= 90)
+            {
+                y -= moveY;
+            }
+            else if (rotationAngle >= 270)
+            {
+                x -= moveX;
+                y -= moveY;
+            }
         }
-        else if (Player::isRight && (int)rotationAngle % 360 < 360 && (int)rotationAngle % 360 > 180)
+        else if (Player::isRight && Player::isUp)
         {
-
+            if (rotationAngle >= 90 && rotationAngle <= 180)
+            {
+                x -= moveX;
+            }
+            else if (rotationAngle >= 270)
+            {
+                y -= moveX;
+            }
+            else if (rotationAngle <= 90)
+            {
+                x -= moveX;
+                y -= moveY;
+            }
         }
-        else if (Player::isUp && (int)rotationAngle % 360 > 90 && (int)rotationAngle % 360 < 270)
+        else if (Player::isLeft && Player::isDown)
         {
-
+            //if (rotationAngle >= 90 && rotationAngle <= 180)
+            //{
+            //    x -= moveX;
+            //}
+            //else if (rotationAngle >= 270)
+            //{
+            //    y -= moveY;
+            //}
+            /*else*/ if (rotationAngle >= 180 && rotationAngle <= 270)
+            {
+                x -= moveX;
+                y -= moveY;
+            }
         }
-        else if (Player::isDown && ((int)rotationAngle % 360 < 90 || (int)rotationAngle % 360 > 270))
+        else if (Player::isRight && Player::isDown)
         {
-
+            //if (rotationAngle <= 90)
+            //{
+            //    y -= moveY;
+            //}
+            //else if (rotationAngle >= 180 && rotationAngle <= 270)
+            //{
+            //    x -= moveX;
+            //}
+            /*else*/ if (rotationAngle >= 90 && rotationAngle <= 180)
+            {
+                x -= moveX;
+                y -= moveY;
+            }
+        }
+        else if (Player::isLeft && (int)rotationAngle < 180)
+        {
+            y -= moveY;
+        }
+        else if (Player::isRight && (int)rotationAngle > 180)
+        {
+            y -= moveY;
+        }
+        else if (Player::isUp && (int)rotationAngle < 270 && (int)rotationAngle > 90)
+        {
+            x -= moveX;
+        }
+        else if (Player::isDown && ((int)rotationAngle > 270 || (int)rotationAngle < 90))
+        {
+            x -= moveX;
         }
         else
         {
-            x -= dx * speed;
-            y -= dy * speed;
+            x -= moveX;
+            y -= moveY;
         }
     }
 }
@@ -153,7 +287,7 @@ void Player::checkCollision()
     isDown = false;
 
     if ((int)(x - texture.width / 2) % tileSize == 0 && map[(int)(y / tileSize) * mapWidth + (int)((x - texture.width) / tileSize)] != '.')
-    { 
+    {
         isLeft = true;
     }
     else if ((int)(x + texture.width / 2) % tileSize == 0 && map[(int)(y / tileSize) * mapWidth + (int)((x + texture.width) / tileSize)] != '.')
