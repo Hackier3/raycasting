@@ -166,24 +166,25 @@ void Player::movement()
                 x += moveX;
                 y += moveY;
             }
-        }                   // LEFT
+        }                                       // LEFT
         else if((Player::isDLEdge && Player::isULEdge) && (int)rotationAngle < 360 && (int)rotationAngle > 180)
         { 
             y += moveY;
-        }                   // RIGHT
+        }                                       // RIGHT
         else if ((Player::isDREdge && Player::isUREdge) && (int)rotationAngle > 0 && (int)rotationAngle < 180)
         {
             y += moveY;
-        }                   // UP
+        }                                       // UP
         else if ((Player::isULEdge && Player::isUREdge) && ((int)rotationAngle < 90 || (int)rotationAngle > 270))
         {
             x += moveX;
-        }                   // DOWN
+        }                                       // DOWN
         else if ((Player::isDLEdge && Player::isDREdge) && (int)rotationAngle > 90 && (int)rotationAngle < 270)
         {
             x += moveX;
-        }                               // if look ahead
-        else if (map[(int)((y + moveY) / tileSize) * mapWidth + (int)((x + moveX) / tileSize)] == '.')
+        }                                   // if look ahead
+
+        else
         {
             x += moveX;
             y += moveY;
