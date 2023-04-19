@@ -20,10 +20,10 @@ public:
 	float y;
 	static constexpr float numberOfRays = 401;
 	
-	bool isLeft;
-	bool isRight;
-	bool isUp;
-	bool isDown;
+	bool isULEdge; // does player collides upper left edge
+	bool isUREdge; // does player collides upper right edge
+	bool isDLEdge; // does player collides down left edge
+	bool isDREdge; // does player collides down right edge
 
 private:
 	Texture2D texture;

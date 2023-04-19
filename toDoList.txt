@@ -3,5 +3,4 @@ floor texture,
 sounds,
 scrolling minimap,
 shooting,
-new blocks,
-collision detector
+new blocks

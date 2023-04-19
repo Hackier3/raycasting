@@ -102,8 +102,8 @@ void Player::movement()
         }
     }
     if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)))
-    {
-        if (Player::isLeft && Player::isUp)
+    {                       // UP LEFT
+        if (Player::isULEdge && Player::isUREdge && Player::isDLEdge)
         {
             if (rotationAngle <= 90)
             {
@@ -118,8 +118,8 @@ void Player::movement()
                 x += moveX;
                 y += moveY;
             }
-        }
-        else if (Player::isRight && Player::isUp)
+        }                   // UP RIGHT
+        else if (Player::isUREdge && Player::isULEdge && Player::isDREdge)
         {
             if (rotationAngle >= 270)
             {
@@ -134,8 +134,8 @@ void Player::movement()
                 x += moveX;
                 y += moveY;
             }
-        }
-        else if (Player::isLeft && Player::isDown)
+        }                   // DOWN LEFT
+        else if (Player::isDLEdge && Player::isDREdge && Player::isULEdge)
         {
             if (rotationAngle >= 90 && rotationAngle <= 180)
             {
@@ -150,8 +150,8 @@ void Player::movement()
                 x += moveX;
                 y += moveY;
             }
-        }
-        else if (Player::isRight && Player::isDown)
+        }                   // DOWN RIGHT
+        else if (Player::isDREdge && Player::isDLEdge && Player::isUREdge)
         {
             if (rotationAngle >= 180 && rotationAngle <= 270)
             {
@@ -166,141 +166,145 @@ void Player::movement()
                 x += moveX;
                 y += moveY;
             }
-        }
-        else if(Player::isLeft && (int)rotationAngle < 360 && (int)rotationAngle > 180)
+        }                   // LEFT
+        else if((Player::isDLEdge && Player::isULEdge) && (int)rotationAngle < 360 && (int)rotationAngle > 180)
         { 
             y += moveY;
-        }
-        else if (Player::isRight && (int)rotationAngle > 0 && (int)rotationAngle < 180)
+        }                   // RIGHT
+        else if ((Player::isDREdge && Player::isUREdge) && (int)rotationAngle > 0 && (int)rotationAngle < 180)
         {
             y += moveY;
-        }
-        else if (Player::isUp && ((int)rotationAngle < 90 || (int)rotationAngle > 270))
+        }                   // UP
+        else if ((Player::isULEdge && Player::isUREdge) && ((int)rotationAngle < 90 || (int)rotationAngle > 270))
         {
             x += moveX;
-        }
-        else if (Player::isDown && (int)rotationAngle > 90 && (int)rotationAngle < 270)
+        }                   // DOWN
+        else if ((Player::isDLEdge && Player::isDREdge) && (int)rotationAngle > 90 && (int)rotationAngle < 270)
         {
             x += moveX;
-        }
-        else
+        }                               // if look ahead
+        else if (map[(int)((y + moveY) / tileSize) * mapWidth + (int)((x + moveX) / tileSize)] == '.')
         {
             x += moveX;
             y += moveY;
         }
     }
-    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
-    {
-        if (Player::isLeft && Player::isUp)
-        {
-            if (rotationAngle >= 180 && rotationAngle <= 270)
-            {
-                x -= moveX;
-            }
-            else if (rotationAngle <= 90)
-            {
-                y -= moveY;
-            }
-            else if (rotationAngle >= 270)
-            {
-                x -= moveX;
-                y -= moveY;
-            }
-        }
-        else if (Player::isRight && Player::isUp)
-        {
-            if (rotationAngle >= 90 && rotationAngle <= 180)
-            {
-                x -= moveX;
-            }
-            else if (rotationAngle >= 270)
-            {
-                y -= moveX;
-            }
-            else if (rotationAngle <= 90)
-            {
-                x -= moveX;
-                y -= moveY;
-            }
-        }
-        else if (Player::isLeft && Player::isDown)
-        {
-            if (rotationAngle >= 270)
-            {
-                x -= moveX;
-            }
-            else if (rotationAngle >= 90 && rotationAngle <= 180)
-            {
-                y -= moveY;
-            }
-            else if (rotationAngle >= 180 && rotationAngle <= 270)
-            {
-                x -= moveX;
-                y -= moveY;
-            }
-        }
-        else if (Player::isRight && Player::isDown)
-        {
-            if (rotationAngle <= 90)
-            {
-                x -= moveX;
-            }
-            else if (rotationAngle >= 180 && rotationAngle <= 270)
-            {
-                y -= moveY;
-            }
-            else if (rotationAngle >= 90 && rotationAngle <= 180)
-            {
-                x -= moveX;
-                y -= moveY;
-            }
-        }
-        else if (Player::isLeft && (int)rotationAngle < 180)
-        {
-            y -= moveY;
-        }
-        else if (Player::isRight && (int)rotationAngle > 180)
-        {
-            y -= moveY;
-        }
-        else if (Player::isUp && (int)rotationAngle < 270 && (int)rotationAngle > 90)
-        {
-            x -= moveX;
-        }
-        else if (Player::isDown && ((int)rotationAngle > 270 || (int)rotationAngle < 90))
-        {
-            x -= moveX;
-        }
-        else
-        {
-            x -= moveX;
-            y -= moveY;
-        }
-    }
+//    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
+//    {
+//        if (Player::isLeft && Player::isUp)
+//        {
+//            if (rotationAngle >= 180 && rotationAngle <= 270)
+//            {
+//                x -= moveX;
+//            }
+//            else if (rotationAngle <= 90)
+//            {
+//                y -= moveY;
+//            }
+//            else if (rotationAngle >= 270)
+//            {
+//                x -= moveX;
+//                y -= moveY;
+//            }
+//        }
+//        else if (Player::isRight && Player::isUp)
+//        {
+//            if (rotationAngle >= 90 && rotationAngle <= 180)
+//            {
+//                x -= moveX;
+//            }
+//            else if (rotationAngle >= 270)
+//            {
+//                y -= moveX;
+//            }
+//            else if (rotationAngle <= 90)
+//            {
+//                x -= moveX;
+//                y -= moveY;
+//            }
+//        }
+//        else if (Player::isLeft && Player::isDown)
+//        {
+//            if (rotationAngle >= 270)
+//            {
+//                x -= moveX;
+//            }
+//            else if (rotationAngle >= 90 && rotationAngle <= 180)
+//            {
+//                y -= moveY;
+//            }
+//            else if (rotationAngle >= 180 && rotationAngle <= 270)
+//            {
+//                x -= moveX;
+//                y -= moveY;
+//            }
+//        }
+//        else if (Player::isRight && Player::isDown)
+//        {
+//            if (rotationAngle <= 90)
+//            {
+//                x -= moveX;
+//            }
+//            else if (rotationAngle >= 180 && rotationAngle <= 270)
+//            {
+//                y -= moveY;
+//            }
+//            else if (rotationAngle >= 90 && rotationAngle <= 180)
+//            {
+//                x -= moveX;
+//                y -= moveY;
+//            }
+//        }
+//        else if (Player::isLeft && (int)rotationAngle < 180)
+//        {
+//            y -= moveY;
+//        }
+//        else if (Player::isRight && (int)rotationAngle > 180)
+//        {
+//            y -= moveY;
+//        }
+//        else if (Player::isUp && (int)rotationAngle < 270 && (int)rotationAngle > 90)
+//        {
+//            x -= moveX;
+//        }
+//        else if (Player::isDown && ((int)rotationAngle > 270 || (int)rotationAngle < 90))
+//        {
+//            x -= moveX;
+//        }
+//        //if (map[(int)((y + moveY) / tileSize) * mapWidth + (int)((x + moveX) / tileSize)] == '.')
+//        //{
+//        //    x -= moveX;
+//        //    y -= moveY;
+//        //}
+//        else
+//        {
+//            x -= moveX;
+//            y -= moveY;
+//        }
+//    }
 }
 
 void Player::checkCollision()
 {
-    isLeft = false;
-    isRight = false;
-    isUp = false;
-    isDown = false;
+    isULEdge = false;
+    isUREdge = false;
+    isDLEdge = false;
+    isDREdge = false;
 
-    if ((int)(x - texture.width / 2) % tileSize == 0 && map[(int)(y / tileSize) * mapWidth + (int)((x - texture.width) / tileSize)] != '.')
+    if (map[(int)((y - texture.height / 2) / tileSize) * mapWidth + (int)((x - texture.width / 2) / tileSize)] != '.')
     {
-        isLeft = true;
+        isULEdge = true;
     }
-    else if ((int)(x + texture.width / 2) % tileSize == 0 && map[(int)(y / tileSize) * mapWidth + (int)((x + texture.width) / tileSize)] != '.')
+    if (map[(int)((y - texture.height / 2) / tileSize) * mapWidth + (int)((x + texture.width / 2) / tileSize)] != '.')
     {
-        isRight = true;
+        isUREdge = true;
     }
-
-    if ((int)(y - texture.height / 2) % tileSize == 0 && map[(int)((y - texture.height) / tileSize) * mapWidth + (int)(x / tileSize)] != '.')
+    if (map[(int)((y + texture.height / 2) / tileSize) * mapWidth + (int)((x - texture.width / 2) / tileSize)] != '.')
     {
-        isUp = true;
+        isDLEdge = true;
     }
-    else if ((int)(y + texture.height / 2) % tileSize == 0 && map[(int)((y + texture.height) / tileSize) * mapWidth + (int)(x / tileSize)] != '.')
+    if (map[(int)((y + texture.height / 2) / tileSize) * mapWidth + (int)((x + texture.width / 2) / tileSize)] != '.')
     {
-        isDown = true;
+        isDREdge = true;
     }
 }
