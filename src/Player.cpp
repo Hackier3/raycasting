@@ -27,6 +27,7 @@ void Player::calculateRaysCoords() {
     std::vector<float> lineNewPositionY(numberOfRays, y);
     int lastWallPos = (int)lineNewPositionX.at(1) / tileSize + (int)(lineNewPositionY.at(1) / tileSize) * mapWidth;
     int newWallPos = -1;
+    const float multiplier = 0.55;
     raysForBlock.assign(numberOfRays ,1);
 
     for (int i = 0; i < numberOfRays; i++)
@@ -34,13 +35,13 @@ void Player::calculateRaysCoords() {
         float dx = sin((rotationAngle + i / rayDestributtionDestiny - numberOfRays / (2 * rayDestributtionDestiny) - 1) * PI / 180.0);
         float dy = cos((rotationAngle + i / rayDestributtionDestiny - numberOfRays / (2 * rayDestributtionDestiny) - 1) * PI / 180.0) * (-1);
 
-        lineNewPositionX.at(i) += dx * speed;
-        lineNewPositionY.at(i) += dy * speed;
+        lineNewPositionX.at(i) += dx * multiplier;
+        lineNewPositionY.at(i) += dy * multiplier;
 
         while (true)
         {                                    //  REASON WHY WALLS CORNERS HAVE STARNGE TEXTURES
-            lineNewPositionX.at(i) += dx * speed;
-            lineNewPositionY.at(i) += dy * speed;
+            lineNewPositionX.at(i) += dx * multiplier;
+            lineNewPositionY.at(i) += dy * multiplier;
 
             if (map[(int)lineNewPositionX.at(i) / tileSize + (int)(lineNewPositionY.at(i) / tileSize) * mapWidth] != '.')
             {

@@ -18,7 +18,7 @@ public:
 	std::vector<int> raysForBlock; // variable indicating how many rays (including me) point to the block
 	float x;
 	float y;
-	static constexpr float numberOfRays = 401;
+	static constexpr float numberOfRays = 351;
 	
 	bool isULEdge; // does player collides upper left edge
 	bool isUREdge; // does player collides upper right edge
