@@ -21,7 +21,8 @@ void Player::drawPlayer() {
     DrawTexturePro(texture, arg2, arg3, ORIGIN, rotationAngle, WHITE);
 }
 
-void Player::calculateRaysCoords() {
+void Player::calculateRaysCoords() 
+{
     float distanceToVertical;  // LEFT and UP is negative
     float distanceToHorizontal;// LEFT and UP is negative
 
@@ -41,7 +42,7 @@ void Player::calculateRaysCoords() {
     else
         distanceToHorizontal = tileSize - fmod(y - 0.3, tileSize);
 
-    if ((abs(dy) / abs(distanceToHorizontal)) > (abs(dx) / abs(distanceToVertical)))
+    if (dy / distanceToHorizontal > dx / distanceToVertical)
     { 
         float rayEndHorDis = -tan(rotationAngle * PI / 180) * (distanceToHorizontal);
         lineX = x + rayEndHorDis;
