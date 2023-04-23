@@ -29,6 +29,9 @@ void Player::calculateRaysCoords()
     float lineX;
     float lineY;
 
+    float rayEndHorDis;
+    float rayEndVerDis;
+
     float dx = sin(rotationAngle * PI / 180.0);
     float dy = -cos(rotationAngle * PI / 180.0);
 
@@ -42,21 +45,49 @@ void Player::calculateRaysCoords()
     else
         distanceToHorizontal = tileSize - fmod(y - 0.3, tileSize);
 
-    if (dy / distanceToHorizontal > dx / distanceToVertical)
+    if (dy / distanceToHorizontal >= dx / distanceToVertical)
     { 
-        float rayEndHorDis = -tan(rotationAngle * PI / 180) * (distanceToHorizontal);
+        rayEndHorDis = -tan(rotationAngle * PI / 180) * (distanceToHorizontal);
         lineX = x + rayEndHorDis;
         lineY = y + distanceToHorizontal;
     }
     else
     {
-        float rayEndVerDis = -distanceToVertical / tan(rotationAngle * PI / 180);
+        rayEndVerDis = -distanceToVertical / tan(rotationAngle * PI / 180);
         lineX = x + distanceToVertical;
         lineY = y + rayEndVerDis;
     }
 
-    if (map[(int)((lineY) / tileSize) * mapWidth + (int)((lineX) / tileSize)] != '.')
-        DrawLine(x, y, lineX, lineY, DARKBLUE);
+    while (true)
+    { 
+        if (map[(int)((lineY) / tileSize) * mapWidth + (int)((lineX) / tileSize)] != '.')
+            break;
+
+        if ((int)lineY % tileSize == tileSize - 1)
+            distanceToHorizontal -= tileSize;
+        else if ((int)lineY % tileSize == 0)
+            distanceToHorizontal += tileSize;
+
+        if ((int)lineX % tileSize == tileSize - 1)
+            distanceToVertical -= tileSize;
+        else if ((int)lineX % tileSize == 0)
+            distanceToVertical += tileSize;
+
+        if (dy / distanceToHorizontal >= dx / distanceToVertical)
+        {
+            rayEndHorDis = -tan(rotationAngle * PI / 180) * (distanceToHorizontal);
+            lineX = x + rayEndHorDis;
+            lineY = y + distanceToHorizontal;
+        }
+        else
+        {
+            rayEndVerDis = -distanceToVertical / tan(rotationAngle * PI / 180);
+            lineX = x + distanceToVertical;
+            lineY = y + rayEndVerDis;
+        }
+    }
+
+    DrawLine(x, y, lineX, lineY, DARKBLUE);
 }
 
 void Player::drawVisionRays() {

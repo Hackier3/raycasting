@@ -12,7 +12,6 @@ int main() {
  
     while (!WindowShouldClose())
     {
-        drawMiniMap();//////////////////////        USUN
         player.movement();
         player.calculateRaysCoords();
         calculateWallHeight(&player, "images/cobblestone.png");
@@ -20,7 +19,7 @@ int main() {
         BeginDrawing();
         {
             ClearBackground(RAYWHITE);
-            //drawMiniMap();
+            drawMiniMap();
             player.drawVisionRays();
             player.drawPlayer();
             // draw3DMap();
