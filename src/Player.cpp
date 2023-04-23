@@ -22,55 +22,40 @@ void Player::drawPlayer() {
 }
 
 void Player::calculateRaysCoords() {
+    float distanceToVertical;  // LEFT and UP is negative
+    float distanceToHorizontal;// LEFT and UP is negative
 
-    std::vector<float> lineNewPositionX(numberOfRays, x);
-    std::vector<float> lineNewPositionY(numberOfRays, y);
-    int lastWallPos = (int)lineNewPositionX.at(1) / tileSize + (int)(lineNewPositionY.at(1) / tileSize) * mapWidth;
-    int newWallPos = -1;
-    const float multiplier = 0.55;
-    raysForBlock.assign(numberOfRays ,1);
+    float lineX;
+    float lineY;
 
-    for (int i = 0; i < numberOfRays; i++)
+    float dx = sin(rotationAngle * PI / 180.0);
+    float dy = -cos(rotationAngle * PI / 180.0);
+
+    if (rotationAngle <= 180)
+        distanceToVertical = tileSize - fmod(x - 0.3, tileSize);
+    else
+        distanceToVertical = -fmod(x + 0.3, tileSize);
+
+    if (rotationAngle <= 90 || rotationAngle >= 270)
+        distanceToHorizontal = -fmod(y + 0.3, tileSize);
+    else
+        distanceToHorizontal = tileSize - fmod(y - 0.3, tileSize);
+
+    if ((abs(dy) / abs(distanceToHorizontal)) > (abs(dx) / abs(distanceToVertical)))
+    { 
+        float rayEndHorDis = -tan(rotationAngle * PI / 180) * (distanceToHorizontal);
+        lineX = x + rayEndHorDis;
+        lineY = y + distanceToHorizontal;
+    }
+    else
     {
-        float dx = sin((rotationAngle + i / rayDestributtionDestiny - numberOfRays / (2 * rayDestributtionDestiny) - 1) * PI / 180.0);
-        float dy = cos((rotationAngle + i / rayDestributtionDestiny - numberOfRays / (2 * rayDestributtionDestiny) - 1) * PI / 180.0) * (-1);
-
-        lineNewPositionX.at(i) += dx * multiplier;
-        lineNewPositionY.at(i) += dy * multiplier;
-
-        while (true)
-        {                                    //  REASON WHY WALLS CORNERS HAVE STARNGE TEXTURES
-            lineNewPositionX.at(i) += dx * multiplier;
-            lineNewPositionY.at(i) += dy * multiplier;
-
-            if (map[(int)lineNewPositionX.at(i) / tileSize + (int)(lineNewPositionY.at(i) / tileSize) * mapWidth] != '.')
-            {
-                newWallPos = (int)lineNewPositionX.at(i) / tileSize + (int)(lineNewPositionY.at(i) / tileSize) * mapWidth;
-                break;
-            }
-        }
-
-        if (lastWallPos == newWallPos && i != 0)
-            raysForBlock.at(i) = raysForBlock.at(i - 1) + 1;
-        lastWallPos = newWallPos;
+        float rayEndVerDis = -distanceToVertical / tan(rotationAngle * PI / 180);
+        lineX = x + distanceToVertical;
+        lineY = y + rayEndVerDis;
     }
 
-    int j = 1;
-    for (int i = numberOfRays - 1; i >= 1; i--)
-    {          
-        if (raysForBlock.at(i - 1) + j == raysForBlock.at(i))
-        {
-            raysForBlock.at(i - 1) = raysForBlock.at(i);
-            j++;
-        }
-        else
-            j = 1;
-        raysEndCoords.at(i) = { lineNewPositionX.at(i), lineNewPositionY.at(i) };
-    }
-
-    if (raysForBlock.at(0) + 1 == raysForBlock.at(1))
-        raysForBlock.at(0) = raysForBlock.at(1);
-    raysEndCoords.at(0) = { lineNewPositionX.at(1), lineNewPositionY.at(1) };
+    if (map[(int)((lineY) / tileSize) * mapWidth + (int)((lineX) / tileSize)] != '.')
+        DrawLine(x, y, lineX, lineY, DARKBLUE);
 }
 
 void Player::drawVisionRays() {
