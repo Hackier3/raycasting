@@ -63,7 +63,7 @@ void Player::calculateRaysCoords()
         if (map[(int)((rayY) / tileSize) * mapWidth + (int)((rayX) / tileSize)] != '.')
             break;
 
-        if (((int)rayX % tileSize == 0 && (int)rayY % tileSize == 0) || ((int)(rayX - 1) % tileSize == 0 && (int)(rayY - 1) % tileSize == 0)) {
+        if (((int)rayX % tileSize == 0 || (int)(rayX - 1) % tileSize == 0) && ((int)rayY % tileSize == 0 || (int)(rayY - 1) % tileSize == 0) && map[(int)((rayY + 1) / tileSize) * mapWidth + (int)((rayX + 1) / tileSize)] != '.'){
             break;
         }
         else
@@ -77,10 +77,19 @@ void Player::calculateRaysCoords()
                 distanceToVertical -= tileSize;
             else if ((int)rayX % tileSize == 0)
                 distanceToVertical += tileSize;
-        }
 
-        printf("rayX: %f\n", rayX);
-        printf("rayY: %f\n\n", rayY);
+            if (((int)rayX % tileSize == 0 || (int)(rayX - 1) % tileSize == 0) && ((int)rayY % tileSize == 0 || (int)(rayY - 1) % tileSize == 0))
+            {
+                if ((rotationAngle <= 90 || rotationAngle >= 270) && map[(int)((rayY - 1) / tileSize) * mapWidth + (int)((rayX + 1) / tileSize)] != '.')
+                    break;
+                else if (rotationAngle >= 90 && rotationAngle <= 180 && map[(int)((rayY + 1) / tileSize) * mapWidth + (int)((rayX + 1) / tileSize)] != '.')
+                    break;
+                else if (rotationAngle >= 180 && rotationAngle <= 270 && map[(int)((rayY + 1) / tileSize) * mapWidth + (int)((rayX - 1) / tileSize)] != '.')
+                    break;
+                else if (rotationAngle >= 270 && rotationAngle <= 360 && map[(int)((rayY - 1) / tileSize) * mapWidth + (int)((rayX - 1) / tileSize)] != '.')
+                    break;
+            }
+        }
 
         if (dy / distanceToHorizontal >= dx / distanceToVertical)
         {
@@ -94,6 +103,9 @@ void Player::calculateRaysCoords()
             rayX = x + distanceToVertical;
             rayY = y + rayEndVerDis;
         }
+
+        printf("distanceToVertical: %f\n", distanceToVertical);
+        printf("distanceToHorizontal: %f\n\n", distanceToHorizontal);
     }
 
     DrawLine(x, y, rayX, rayY, DARKBLUE);
