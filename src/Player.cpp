@@ -63,33 +63,34 @@ void Player::calculateRaysCoords()
         if (map[(int)((rayY) / tileSize) * mapWidth + (int)((rayX) / tileSize)] != '.')
             break;
 
-        if (((int)rayX % tileSize == 0 || (int)(rayX - 1) % tileSize == 0) && ((int)rayY % tileSize == 0 || (int)(rayY - 1) % tileSize == 0) && map[(int)((rayY + 1) / tileSize) * mapWidth + (int)((rayX + 1) / tileSize)] != '.'){
-            break;
-        }
-        else
-        {
-            if ((int)rayY % tileSize == tileSize - 1)
-                distanceToHorizontal -= tileSize;
-            else if ((int)rayY % tileSize == 0)
-                distanceToHorizontal += tileSize;
+        if (((int)rayX % tileSize == 0 || (int)(rayX - 1) % tileSize == 0) && ((int)rayY % tileSize == 0 || (int)(rayY - 1) % tileSize == 0)){
+            
+            int mapIndexX;
+            int mapIndexY;
+            
+            if ((int)rayX % tileSize == 0)
+                mapIndexX = rayX -1;
+            else
+                mapIndexX = rayX +1;
+            
+            if ((int)rayY % tileSize == 0)
+                mapIndexY = rayY - 1;
+            else
+                mapIndexY = rayY + 1;
 
-            if ((int)rayX % tileSize == tileSize - 1)
-                distanceToVertical -= tileSize;
-            else if ((int)rayX % tileSize == 0)
-                distanceToVertical += tileSize;
-
-            if (((int)rayX % tileSize == 0 || (int)(rayX - 1) % tileSize == 0) && ((int)rayY % tileSize == 0 || (int)(rayY - 1) % tileSize == 0))
-            {
-                if ((rotationAngle <= 90 || rotationAngle >= 270) && map[(int)((rayY - 1) / tileSize) * mapWidth + (int)((rayX + 1) / tileSize)] != '.')
-                    break;
-                else if (rotationAngle >= 90 && rotationAngle <= 180 && map[(int)((rayY + 1) / tileSize) * mapWidth + (int)((rayX + 1) / tileSize)] != '.')
-                    break;
-                else if (rotationAngle >= 180 && rotationAngle <= 270 && map[(int)((rayY + 1) / tileSize) * mapWidth + (int)((rayX - 1) / tileSize)] != '.')
-                    break;
-                else if (rotationAngle >= 270 && rotationAngle <= 360 && map[(int)((rayY - 1) / tileSize) * mapWidth + (int)((rayX - 1) / tileSize)] != '.')
-                    break;
-            }
+            if (map[(mapIndexY / tileSize) * mapWidth + (mapIndexX / tileSize)] != '.')
+                break;
         }
+
+        if (((int)rayY % tileSize == tileSize - 1) && (rotationAngle >= 270 || rotationAngle <= 90))
+            distanceToHorizontal -= tileSize;
+        else if ((int)rayY % tileSize == 0 && rotationAngle >= 90 && rotationAngle <= 270)
+            distanceToHorizontal += tileSize;
+
+        if ((int)rayX % tileSize == tileSize - 1 && rotationAngle >= 180)
+            distanceToVertical -= tileSize;
+        else if ((int)rayX % tileSize == 0 && rotationAngle <= 180)
+            distanceToVertical += tileSize;
 
         if (dy / distanceToHorizontal >= dx / distanceToVertical)
         {
@@ -103,9 +104,6 @@ void Player::calculateRaysCoords()
             rayX = x + distanceToVertical;
             rayY = y + rayEndVerDis;
         }
-
-        printf("distanceToVertical: %f\n", distanceToVertical);
-        printf("distanceToHorizontal: %f\n\n", distanceToHorizontal);
     }
 
     DrawLine(x, y, rayX, rayY, DARKBLUE);
