@@ -2,12 +2,12 @@
 #include "Map.h"
 #include "Defines.h"
 
-Player::Player(const char* texturePath) :   texture(LoadTexture(texturePath)), 
-                                            speed(0.35), 
-                                            rotationAngle(0),
-                                            raysEndCoords(numberOfRays),
-                                            raysForBlock(numberOfRays, 1), 
-                                            rayDestributtionDestiny(numberOfRays / 88)
+Player::Player(const char* texturePath) : texture(LoadTexture(texturePath)),
+                                                                            speed(0.35),
+                                                                            rotationAngle(0),
+                                                                            raysEndCoords(numberOfRays),
+                                                                            raysForBlock(numberOfRays, 1),
+                                                                            rayDestributtionDestiny(numberOfRays / 88)
 {
     x = tileSize + texture.width;
     y = tileSize + texture.height;
@@ -21,13 +21,13 @@ void Player::drawPlayer() {
     DrawTexturePro(texture, arg2, arg3, ORIGIN, rotationAngle, WHITE);
 }
 
-void Player::calculateRaysCoords() 
+void Player::calculateRaysCoords()
 {
     float distanceToVertical;  // LEFT and UP is negative
     float distanceToHorizontal;// LEFT and UP is negative
 
-    float lineX;
-    float lineY;
+    float rayX;
+    float rayY;
 
     float rayEndHorDis;
     float rayEndVerDis;
@@ -46,48 +46,57 @@ void Player::calculateRaysCoords()
         distanceToHorizontal = tileSize - fmod(y - 0.3, tileSize);
 
     if (dy / distanceToHorizontal >= dx / distanceToVertical)
-    { 
+    {
         rayEndHorDis = -tan(rotationAngle * PI / 180) * (distanceToHorizontal);
-        lineX = x + rayEndHorDis;
-        lineY = y + distanceToHorizontal;
+        rayX = x + rayEndHorDis;
+        rayY = y + distanceToHorizontal;
     }
     else
     {
         rayEndVerDis = -distanceToVertical / tan(rotationAngle * PI / 180);
-        lineX = x + distanceToVertical;
-        lineY = y + rayEndVerDis;
+        rayX = x + distanceToVertical;
+        rayY = y + rayEndVerDis;
     }
 
     while (true)
-    { 
-        if (map[(int)((lineY) / tileSize) * mapWidth + (int)((lineX) / tileSize)] != '.')
+    {
+        if (map[(int)((rayY) / tileSize) * mapWidth + (int)((rayX) / tileSize)] != '.')
             break;
 
-        if ((int)lineY % tileSize == tileSize - 1)
-            distanceToHorizontal -= tileSize;
-        else if ((int)lineY % tileSize == 0)
-            distanceToHorizontal += tileSize;
+        if (((int)rayX % tileSize == 0 && (int)rayY % tileSize == 0) || ((int)(rayX - 1) % tileSize == 0 && (int)(rayY - 1) % tileSize == 0)) {
+            break;
+        }
+        else
+        {
+            if ((int)rayY % tileSize == tileSize - 1)
+                distanceToHorizontal -= tileSize;
+            else if ((int)rayY % tileSize == 0)
+                distanceToHorizontal += tileSize;
 
-        if ((int)lineX % tileSize == tileSize - 1)
-            distanceToVertical -= tileSize;
-        else if ((int)lineX % tileSize == 0)
-            distanceToVertical += tileSize;
+            if ((int)rayX % tileSize == tileSize - 1)
+                distanceToVertical -= tileSize;
+            else if ((int)rayX % tileSize == 0)
+                distanceToVertical += tileSize;
+        }
+
+        printf("rayX: %f\n", rayX);
+        printf("rayY: %f\n\n", rayY);
 
         if (dy / distanceToHorizontal >= dx / distanceToVertical)
         {
             rayEndHorDis = -tan(rotationAngle * PI / 180) * (distanceToHorizontal);
-            lineX = x + rayEndHorDis;
-            lineY = y + distanceToHorizontal;
+            rayX = x + rayEndHorDis;
+            rayY = y + distanceToHorizontal;
         }
         else
         {
             rayEndVerDis = -distanceToVertical / tan(rotationAngle * PI / 180);
-            lineX = x + distanceToVertical;
-            lineY = y + rayEndVerDis;
+            rayX = x + distanceToVertical;
+            rayY = y + rayEndVerDis;
         }
     }
 
-    DrawLine(x, y, lineX, lineY, DARKBLUE);
+    DrawLine(x, y, rayX, rayY, DARKBLUE);
 }
 
 void Player::drawVisionRays() {
@@ -132,7 +141,7 @@ void Player::movement()
                 y += moveY;
             }
             else if (rotationAngle >= 90 && rotationAngle <= 180)
-            { 
+            {
                 x += moveX;
                 y += moveY;
             }
@@ -185,8 +194,8 @@ void Player::movement()
                 y += moveY;
             }
         }                                       // LEFT
-        else if((Player::isDLEdge && Player::isULEdge) && rotationAngle < 360 && rotationAngle > 180)
-        { 
+        else if ((Player::isDLEdge && Player::isULEdge) && rotationAngle < 360 && rotationAngle > 180)
+        {
             y += moveY;
         }                                       // RIGHT
         else if ((Player::isDREdge && Player::isUREdge) && rotationAngle > 0 && rotationAngle < 180)
@@ -211,7 +220,7 @@ void Player::movement()
                     y += moveY;
                 }
             }
-            else 
+            else
             {
                 y += moveY;
                 if (rotationAngle < 180)
@@ -260,7 +269,7 @@ void Player::movement()
         }
         else if (Player::isDREdge)
         {
-            if (((int)x + texture.width/ 2) % tileSize == 0)
+            if (((int)x + texture.width / 2) % tileSize == 0)
             {
                 y += moveY;
                 if (rotationAngle > 180)
@@ -283,10 +292,10 @@ void Player::movement()
             y += moveY;
         }
     }
-//    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
-//    {
+    //    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
+    //    {
 
-//    }
+    //    }
 }
 
 void Player::checkCollision()
