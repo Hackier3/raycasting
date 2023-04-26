@@ -32,29 +32,29 @@ void Player::calculateRaysCoords()
 
     for (int i = -numberOfRays/2; i < numberOfRays/2; i++)
     {
-        float rotation = fmod(rotationAngle + fieldOfViewAngle * float(i/(numberOfRays)), 360);
-        float dx = sin(rotation * PI / 180.0);
-        float dy = -cos(rotation * PI / 180.0);
+        float angleRotationAngle = fmod(rotationAngle + fieldOfViewAngle * float(i/(numberOfRays)), 360);
+        float dx = sin(angleRotationAngle * PI / 180.0);
+        float dy = -cos(angleRotationAngle * PI / 180.0);
 
-        if (rotation <= 180)
+        if (angleRotationAngle <= 180)
             distanceToVertical = tileSize - fmod(x - 0.3, tileSize);
         else
             distanceToVertical = -fmod(x + 0.3, tileSize);
 
-        if (rotation <= 90 || rotation >= 270)
+        if (angleRotationAngle <= 90 || angleRotationAngle >= 270)
             distanceToHorizontal = -fmod(y + 0.3, tileSize);
         else
             distanceToHorizontal = tileSize - fmod(y - 0.3, tileSize);
 
         if (dy / distanceToHorizontal >= dx / distanceToVertical)
         {
-            rayEndHorDis = -tan(rotation * PI / 180) * (distanceToHorizontal);
+            rayEndHorDis = -tan(angleRotationAngle * PI / 180) * (distanceToHorizontal);
             rayX = x + rayEndHorDis;
             rayY = y + distanceToHorizontal;
         }
         else
         {
-            rayEndVerDis = -distanceToVertical / tan(rotation * PI / 180);
+            rayEndVerDis = -distanceToVertical / tan(angleRotationAngle * PI / 180);
             rayX = x + distanceToVertical;
             rayY = y + rayEndVerDis;
         }
@@ -83,25 +83,25 @@ void Player::calculateRaysCoords()
                     break;
             }
 
-            if (((int)rayY % tileSize == tileSize - 1) && (rotation >= 270 || rotation <= 90))
+            if (((int)rayY % tileSize == tileSize - 1) && (angleRotationAngle >= 270 || angleRotationAngle <= 90))
                 distanceToHorizontal -= tileSize;
-            else if ((int)rayY % tileSize == 0 && rotation >= 90 && rotation <= 270)
+            else if ((int)rayY % tileSize == 0 && angleRotationAngle >= 90 && angleRotationAngle <= 270)
                 distanceToHorizontal += tileSize;
 
-            if ((int)rayX % tileSize == tileSize - 1 && rotation >= 180)
+            if ((int)rayX % tileSize == tileSize - 1 && angleRotationAngle >= 180)
                 distanceToVertical -= tileSize;
-            else if ((int)rayX % tileSize == 0 && rotation <= 180)
+            else if ((int)rayX % tileSize == 0 && angleRotationAngle <= 180)
                 distanceToVertical += tileSize;
 
             if (dy / distanceToHorizontal >= dx / distanceToVertical)
             {
-                rayEndHorDis = -tan(rotation * PI / 180) * (distanceToHorizontal);
+                rayEndHorDis = -tan(angleRotationAngle * PI / 180) * (distanceToHorizontal);
                 rayX = x + rayEndHorDis;
                 rayY = y + distanceToHorizontal;
             }
             else
             {
-                rayEndVerDis = -distanceToVertical / tan(rotation * PI / 180);
+                rayEndVerDis = -distanceToVertical / tan(angleRotationAngle * PI / 180);
                 rayX = x + distanceToVertical;
                 rayY = y + rayEndVerDis;
             }
@@ -221,7 +221,7 @@ void Player::movement()
         else if ((Player::isDLEdge && Player::isDREdge) && rotationAngle > 90 && rotationAngle < 270)
         {
             x += moveX;
-        }                                  // RIGHT UP EDGE
+        }                                  // DOWN LEFT EDGE
         else if (Player::isDLEdge)
         {
             if (((int)y + texture.height / 2) % tileSize == 0)
@@ -259,7 +259,7 @@ void Player::movement()
                     y += moveY;
                 }
             }
-        }
+        }                                   // UP RIGHT EDGE
         else if (Player::isUREdge)
         {
             if (((int)y - texture.height / 2) % tileSize == (tileSize - 1))
@@ -278,7 +278,7 @@ void Player::movement()
                     x += moveX;
                 }
             }
-        }
+        }                                   // DOWN RIGHT EDGE
         else if (Player::isDREdge)
         {
             if (((int)x + texture.width / 2) % tileSize == 0)
@@ -304,10 +304,170 @@ void Player::movement()
             y += moveY;
         }
     }
-    //    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
-    //    {
-
-    //    }
+    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
+    {                                     // UP LEFT
+        if (Player::isULEdge && Player::isUREdge && Player::isDLEdge)
+        {
+            if (rotationAngle >= 180 && rotationAngle <= 270)
+            {
+                x -= moveX;
+            }
+            else if (rotationAngle <= 90)
+            {
+                y -= moveY;
+            }
+            else if (rotationAngle >= 270)
+            {
+                x -= moveX;
+                y -= moveY;
+            }
+        }                                   // UP RIGHT
+        else if (Player::isUREdge && Player::isULEdge && Player::isDREdge)
+        {
+            if (rotationAngle >= 90 && rotationAngle <= 180)
+            {
+                x -= moveX;
+            }
+            else if (rotationAngle >= 270)
+            {
+                y -= moveX;
+            }
+            else if (rotationAngle <= 90)
+            {
+                x -= moveX;
+                y -= moveY;
+            }
+        }                                   // DOWN LEFT
+        else if (Player::isDLEdge && Player::isDREdge && Player::isULEdge)
+        {
+            if (rotationAngle >= 270)
+            {
+                x -= moveX;
+            }
+            else if (rotationAngle >= 90 && rotationAngle <= 180)
+            {
+                y -= moveY;
+            }
+            else if (rotationAngle >= 180 && rotationAngle <= 270)
+            {
+                x -= moveX;
+                y -= moveY;
+            }
+        }                                   // DOWN RIGHT
+        else if (Player::isDREdge && Player::isDLEdge && Player::isUREdge)
+        {
+            if (rotationAngle <= 90)
+            {
+                x -= moveX;
+            }
+            else if (rotationAngle >= 180 && rotationAngle <= 270)
+            {
+                y -= moveY;
+            }
+            else if (rotationAngle >= 90 && rotationAngle <= 180)
+            {
+                x -= moveX;
+                y -= moveY;
+            }
+        }                                       // LEFT
+        else if ((Player::isDLEdge && Player::isULEdge) && rotationAngle <= 180)
+        {
+            y -= moveY;
+        }                                       // RIGHT
+        else if ((Player::isDREdge && Player::isUREdge) && rotationAngle >= 180)
+        {
+            y -= moveY;
+        }                                       // UP
+        else if ((Player::isULEdge && Player::isUREdge) && rotationAngle >= 90 && rotationAngle <= 270)
+        {
+            x += moveX;
+        }                                       // DOWN
+        else if ((Player::isDLEdge && Player::isDREdge) && (rotationAngle <= 90 || rotationAngle >= 270))
+        {
+            x += moveX;
+        }                                  // DOWN LEFT EDGE
+        else if (Player::isDLEdge)
+        {
+            if (((int)y + texture.height / 2) % tileSize == 0)
+            {
+                x += moveX;
+                if (rotationAngle >= 90 && rotationAngle <= 270)
+                {
+                    y += moveY;
+                }
+            }
+            else
+            {
+                y -= moveY;
+                if (rotationAngle >= 180)
+                {
+                    x -= moveX;
+                }
+            }
+        }                                   // UP LEFT EDGE
+        else if (Player::isULEdge)
+        {
+            if (((int)x - texture.width / 2) % tileSize == (tileSize - 1))
+            {
+                y -= moveY;
+                if (rotationAngle >= 180)
+                {
+                    x -= moveX;
+                }
+            }
+            else
+            {
+                x -= moveX;
+                if (rotationAngle <= 90 || rotationAngle >= 270)
+                {
+                    y -= moveY;
+                }
+            }
+        }                                   // UP RIGHT EDGE
+        else if (Player::isUREdge)
+        {
+            if (((int)y - texture.height / 2) % tileSize == (tileSize - 1))
+            {
+                x -= moveX;
+                if (rotationAngle <= 90 || rotationAngle >= 270)
+                {
+                    y -= moveY;
+                }
+            }
+            else
+            {
+                y -= moveY;
+                if (rotationAngle <= 180)
+                {
+                    x -= moveX;
+                }
+            }
+        }                               // DOWN RIGHT EDGE
+        else if (Player::isDREdge)
+        {
+            if (((int)x - texture.width / 2) % tileSize == 0)
+            {
+                y -= moveY;
+                if (rotationAngle <= 180)
+                {
+                    x -= moveX;
+                }
+            }
+            else
+            {
+                x -= moveX;
+                if (rotationAngle >= 90 && rotationAngle <= 270)
+                {
+                    y -= moveY;
+                }
+            }
+        }
+        else
+        {
+            x -= moveX;
+            y -= moveY;
+        }
+    }
 }
 
 void Player::checkCollision()
