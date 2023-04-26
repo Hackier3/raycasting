@@ -18,8 +18,8 @@ public:
 	std::vector<int> raysForBlock; // variable indicating how many rays (including me) point to the block
 	float x;
 	float y;
-	static constexpr float numberOfRays = 513;
-	
+	static constexpr float numberOfRays = 751;
+
 	bool isULEdge; // does player collides upper left edge
 	bool isUREdge; // does player collides upper right edge
 	bool isDLEdge; // does player collides down left edge
@@ -28,8 +28,8 @@ public:
 private:
 	Texture2D texture;
 	float speed;
-	const float rayDestributtionDestiny;
 	double rotationAngle;
+	static constexpr float fieldOfViewAngle = 90;
 };
 
 #endif // PLAYER_H

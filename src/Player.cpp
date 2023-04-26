@@ -4,10 +4,8 @@
 
 Player::Player(const char* texturePath) : texture(LoadTexture(texturePath)),
                                                                             speed(0.35),
-                                                                            rotationAngle(0),
                                                                             raysEndCoords(numberOfRays),
-                                                                            raysForBlock(numberOfRays, 1),
-                                                                            rayDestributtionDestiny(numberOfRays / 88)
+                                                                            raysForBlock(numberOfRays, 1)
 {
     x = tileSize + texture.width;
     y = tileSize + texture.height;
@@ -32,81 +30,85 @@ void Player::calculateRaysCoords()
     float rayEndHorDis;
     float rayEndVerDis;
 
-    float dx = sin(rotationAngle * PI / 180.0);
-    float dy = -cos(rotationAngle * PI / 180.0);
-
-    if (rotationAngle <= 180)
-        distanceToVertical = tileSize - fmod(x - 0.3, tileSize);
-    else
-        distanceToVertical = -fmod(x + 0.3, tileSize);
-
-    if (rotationAngle <= 90 || rotationAngle >= 270)
-        distanceToHorizontal = -fmod(y + 0.3, tileSize);
-    else
-        distanceToHorizontal = tileSize - fmod(y - 0.3, tileSize);
-
-    if (dy / distanceToHorizontal >= dx / distanceToVertical)
+    for (int i = -numberOfRays/2; i < numberOfRays/2; i++)
     {
-        rayEndHorDis = -tan(rotationAngle * PI / 180) * (distanceToHorizontal);
-        rayX = x + rayEndHorDis;
-        rayY = y + distanceToHorizontal;
-    }
-    else
-    {
-        rayEndVerDis = -distanceToVertical / tan(rotationAngle * PI / 180);
-        rayX = x + distanceToVertical;
-        rayY = y + rayEndVerDis;
-    }
+        float rotation = fmod(rotationAngle + fieldOfViewAngle * float(i/(numberOfRays)), 360);
+        float dx = sin(rotation * PI / 180.0);
+        float dy = -cos(rotation * PI / 180.0);
 
-    while (true)
-    {
-        if (map[(int)((rayY) / tileSize) * mapWidth + (int)((rayX) / tileSize)] != '.')
-            break;
+        if (rotation <= 180)
+            distanceToVertical = tileSize - fmod(x - 0.3, tileSize);
+        else
+            distanceToVertical = -fmod(x + 0.3, tileSize);
 
-        if (((int)rayX % tileSize == 0 || (int)(rayX - 1) % tileSize == 0) && ((int)rayY % tileSize == 0 || (int)(rayY - 1) % tileSize == 0)){
-            
-            int mapIndexX;
-            int mapIndexY;
-            
-            if ((int)rayX % tileSize == 0)
-                mapIndexX = rayX -1;
-            else
-                mapIndexX = rayX +1;
-            
-            if ((int)rayY % tileSize == 0)
-                mapIndexY = rayY - 1;
-            else
-                mapIndexY = rayY + 1;
-
-            if (map[(mapIndexY / tileSize) * mapWidth + (mapIndexX / tileSize)] != '.')
-                break;
-        }
-
-        if (((int)rayY % tileSize == tileSize - 1) && (rotationAngle >= 270 || rotationAngle <= 90))
-            distanceToHorizontal -= tileSize;
-        else if ((int)rayY % tileSize == 0 && rotationAngle >= 90 && rotationAngle <= 270)
-            distanceToHorizontal += tileSize;
-
-        if ((int)rayX % tileSize == tileSize - 1 && rotationAngle >= 180)
-            distanceToVertical -= tileSize;
-        else if ((int)rayX % tileSize == 0 && rotationAngle <= 180)
-            distanceToVertical += tileSize;
+        if (rotation <= 90 || rotation >= 270)
+            distanceToHorizontal = -fmod(y + 0.3, tileSize);
+        else
+            distanceToHorizontal = tileSize - fmod(y - 0.3, tileSize);
 
         if (dy / distanceToHorizontal >= dx / distanceToVertical)
         {
-            rayEndHorDis = -tan(rotationAngle * PI / 180) * (distanceToHorizontal);
+            rayEndHorDis = -tan(rotation * PI / 180) * (distanceToHorizontal);
             rayX = x + rayEndHorDis;
             rayY = y + distanceToHorizontal;
         }
         else
         {
-            rayEndVerDis = -distanceToVertical / tan(rotationAngle * PI / 180);
+            rayEndVerDis = -distanceToVertical / tan(rotation * PI / 180);
             rayX = x + distanceToVertical;
             rayY = y + rayEndVerDis;
         }
-    }
 
-    DrawLine(x, y, rayX, rayY, DARKBLUE);
+        while (true)
+        {
+            if (map[(int)((rayY) / tileSize) * mapWidth + (int)((rayX) / tileSize)] != '.')
+                break;
+
+            if (((int)rayX % tileSize == 0 || (int)(rayX - 1) % tileSize == 0) && ((int)rayY % tileSize == 0 || (int)(rayY - 1) % tileSize == 0)) {
+
+                int mapIndexX;
+                int mapIndexY;
+
+                if ((int)rayX % tileSize == 0)
+                    mapIndexX = rayX - 1;
+                else
+                    mapIndexX = rayX + 1;
+
+                if ((int)rayY % tileSize == 0)
+                    mapIndexY = rayY - 1;
+                else
+                    mapIndexY = rayY + 1;
+
+                if (map[(mapIndexY / tileSize) * mapWidth + (mapIndexX / tileSize)] != '.')
+                    break;
+            }
+
+            if (((int)rayY % tileSize == tileSize - 1) && (rotation >= 270 || rotation <= 90))
+                distanceToHorizontal -= tileSize;
+            else if ((int)rayY % tileSize == 0 && rotation >= 90 && rotation <= 270)
+                distanceToHorizontal += tileSize;
+
+            if ((int)rayX % tileSize == tileSize - 1 && rotation >= 180)
+                distanceToVertical -= tileSize;
+            else if ((int)rayX % tileSize == 0 && rotation <= 180)
+                distanceToVertical += tileSize;
+
+            if (dy / distanceToHorizontal >= dx / distanceToVertical)
+            {
+                rayEndHorDis = -tan(rotation * PI / 180) * (distanceToHorizontal);
+                rayX = x + rayEndHorDis;
+                rayY = y + distanceToHorizontal;
+            }
+            else
+            {
+                rayEndVerDis = -distanceToVertical / tan(rotation * PI / 180);
+                rayX = x + distanceToVertical;
+                rayY = y + rayEndVerDis;
+            }
+        }
+
+        DrawLine(x, y, rayX, rayY, DARKBLUE);
+    }
 }
 
 void Player::drawVisionRays() {
