@@ -39,14 +39,13 @@ void calculateWallHeight(Player* player, const char* texturePath) {
         rayEnd.y = player->raysEndCoords.at(i).y;
         float distance = sqrt(pow(rayEnd.x - player->x, 2) + pow(rayEnd.y - player->y, 2));
         float wallHeight = screenHeight * wallHeightScale / distance;
-        
-        int sourceRecX = texturePartCounter * texture.width / player->raysForBlock.at(i);
-        float destRecX = i * screenWidth / Player::numberOfRays;
+
+        int startPosX = texturePartCounter * texture.width / player->raysForBlock.at(i);
 
         // Wall texture
-        Rectangle sourceRec = { sourceRecX, 0, 1, texture.height};
-        Rectangle destRec = { destRecX, (screenHeight - wallHeight) / 2, destRecX / i, wallHeight };
-        
+        Rectangle sourceRec = { startPosX, 0, 1, texture.height };
+        Rectangle destRec = { static_cast<float>(i * screenWidth / Player::numberOfRays), (screenHeight - wallHeight) / 2, screenWidth / Player::numberOfRays, wallHeight };
+
         if (texturePartCounter + 1 != player->raysForBlock.at(i))
             texturePartCounter++;
         else
@@ -66,6 +65,6 @@ void draw3DMap() {
 
     std::vector<float> wallHeight(Player::numberOfRays);
     for (int i = 0; i < Player::numberOfRays; i++) {
-        //DrawRectangle(0, 0, i + screenWidth / mapWidth, wallHeight.at(i), PURPLE);
+        DrawRectangle(0, 0, i + screenWidth / mapWidth, wallHeight.at(i), PURPLE);
     }
 }

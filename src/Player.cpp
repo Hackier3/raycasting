@@ -24,6 +24,9 @@ void Player::calculateRaysCoords()
     float distanceToVertical;  // LEFT and UP is negative
     float distanceToHorizontal;// LEFT and UP is negative
 
+    int mapIndexX = 0;
+    int mapIndexY = 0;
+
     float rayX;
     float rayY;
 
@@ -32,82 +35,85 @@ void Player::calculateRaysCoords()
 
     for (int i = -numberOfRays/2; i < numberOfRays/2; i++)
     {
-        float angleRotationAngle = fmod(rotationAngle + fieldOfViewAngle * float(i/(numberOfRays)), 360);
-        float dx = sin(angleRotationAngle * PI / 180.0);
-        float dy = -cos(angleRotationAngle * PI / 180.0);
+        float rayRotationAngle = fmod(rotationAngle + fieldOfViewAngle * float(i/(numberOfRays)), 360);
+        if (rayRotationAngle < 0)
+            rayRotationAngle = 360 + rayRotationAngle;
 
-        if (angleRotationAngle <= 180)
+        float dx = sin(rayRotationAngle * PI / 180.0);
+        float dy = -cos(rayRotationAngle * PI / 180.0);
+
+        if (rayRotationAngle <= 180)
             distanceToVertical = tileSize - fmod(x - 0.3, tileSize);
         else
             distanceToVertical = -fmod(x + 0.3, tileSize);
 
-        if (angleRotationAngle <= 90 || angleRotationAngle >= 270)
+        if (rayRotationAngle <= 90 || rayRotationAngle >= 270)
             distanceToHorizontal = -fmod(y + 0.3, tileSize);
         else
             distanceToHorizontal = tileSize - fmod(y - 0.3, tileSize);
 
-        if (dy / distanceToHorizontal >= dx / distanceToVertical)
-        {
-            rayEndHorDis = -tan(angleRotationAngle * PI / 180) * (distanceToHorizontal);
+        rayEndHorDis = -tan(rayRotationAngle * PI / 180) * (distanceToHorizontal);
+        rayEndVerDis = -distanceToVertical / tan(rayRotationAngle * PI / 180);
+
+        if (dy / distanceToHorizontal >= dx / distanceToVertical){
             rayX = x + rayEndHorDis;
             rayY = y + distanceToHorizontal;
         }
-        else
-        {
-            rayEndVerDis = -distanceToVertical / tan(angleRotationAngle * PI / 180);
+        else{
             rayX = x + distanceToVertical;
             rayY = y + rayEndVerDis;
         }
 
+        bool isEdge = false;
         while (true)
         {
             if (map[(int)((rayY) / tileSize) * mapWidth + (int)((rayX) / tileSize)] != '.')
                 break;
 
-            if (((int)rayX % tileSize == 0 || (int)(rayX - 1) % tileSize == 0) && ((int)rayY % tileSize == 0 || (int)(rayY - 1) % tileSize == 0)) {
-
-                int mapIndexX;
-                int mapIndexY;
-
-                if ((int)rayX % tileSize == 0)
-                    mapIndexX = rayX - 1;
-                else
-                    mapIndexX = rayX + 1;
-
-                if ((int)rayY % tileSize == 0)
-                    mapIndexY = rayY - 1;
-                else
-                    mapIndexY = rayY + 1;
-
-                if (map[(mapIndexY / tileSize) * mapWidth + (mapIndexX / tileSize)] != '.')
-                    break;
+            int counter = 0;
+            if (((int)rayY % tileSize == tileSize - 1) && (rayRotationAngle >= 270 || rayRotationAngle <= 90)) {
+                distanceToHorizontal -= tileSize;
+                counter++;
+            }
+            else if ((int)rayY % tileSize == 0 && rayRotationAngle >= 90 && rayRotationAngle <= 270) {
+                distanceToHorizontal += tileSize;
+                counter++;
             }
 
-            if (((int)rayY % tileSize == tileSize - 1) && (angleRotationAngle >= 270 || angleRotationAngle <= 90))
-                distanceToHorizontal -= tileSize;
-            else if ((int)rayY % tileSize == 0 && angleRotationAngle >= 90 && angleRotationAngle <= 270)
-                distanceToHorizontal += tileSize;
-
-            if ((int)rayX % tileSize == tileSize - 1 && angleRotationAngle >= 180)
+            if ((int)rayX % tileSize == tileSize - 1 && rayRotationAngle >= 180) {
                 distanceToVertical -= tileSize;
-            else if ((int)rayX % tileSize == 0 && angleRotationAngle <= 180)
+                counter++;
+            }
+            else if ((int)rayX % tileSize == 0 && rayRotationAngle <= 180) {
                 distanceToVertical += tileSize;
+                counter++;
+            }
 
-            if (dy / distanceToHorizontal >= dx / distanceToVertical)
+            // przypadek dla punktu bedacego krawedzia pola, przez ktory przechodzi promien patrzenia
+            if (counter == 2 && !isEdge) {
+                distanceToVertical = rayX - x;
+                distanceToHorizontal = rayY - y;
+                isEdge = true;
+            }
+            else {
+                isEdge = false;
+            }
+
+            if (dy / distanceToHorizontal > dx / distanceToVertical)
             {
-                rayEndHorDis = -tan(angleRotationAngle * PI / 180) * (distanceToHorizontal);
+                rayEndHorDis = -tan(rayRotationAngle * PI / 180) * (distanceToHorizontal);
                 rayX = x + rayEndHorDis;
                 rayY = y + distanceToHorizontal;
             }
             else
             {
-                rayEndVerDis = -distanceToVertical / tan(angleRotationAngle * PI / 180);
+                rayEndVerDis = -distanceToVertical / tan(rayRotationAngle * PI / 180);
                 rayX = x + distanceToVertical;
                 rayY = y + rayEndVerDis;
             }
         }
 
-        DrawLine(x, y, rayX, rayY, DARKBLUE);
+        raysEndCoords.at(i + numberOfRays / 2) = { rayX, rayY };
     }
 }
 
